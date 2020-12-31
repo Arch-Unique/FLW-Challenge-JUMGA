@@ -36,7 +36,7 @@ router.delete("/:id", (req, res) => {
   const id = req.params.id;
   User.findByIdAndDelete(id)
     .then((result) =>
-      res.status(200).json({ msg: "User successfully updated" })
+      res.status(200).json({ msg: "User successfully deleted" })
     )
     .catch((err) => res.status(400).json({ msg: err }));
 });
