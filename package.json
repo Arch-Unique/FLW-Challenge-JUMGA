@@ -1,0 +1,30 @@
+{
+  "name": "jumga",
+  "version": "1.0.0",
+  "description": "Buy and Sell your wishes",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js --exec babel-node --presets env",
+    "release": "npm run clean && npm run build && npm run serve",
+    "clean": "rm -rf dist && mkdir dist",
+    "build": "babel . -s -D -d dist --presets env --ignore node_modules",
+    "serve": "node dist/server.js"
+  },
+  "author": "Ikenna",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "flutterwave-node-v3": "^1.0.6",
+    "http": "0.0.1-security",
+    "mongodb": "^3.6.3",
+    "mongoose": "^5.11.9",
+    "node-cron": "^2.0.3",
+    "nodemailer": "^6.4.17",
+    "nodemon": "^2.0.6",
+    "validator": "^13.5.2"
+  }
+}
