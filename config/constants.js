@@ -4,4 +4,4 @@ const productPercent = 2.5;
 const deliveryPercent = 20;
 const approvalFee = 20;
 
-module.exports = { dbUrl };
+module.exports = { dbUrl, productPercent, deliveryPercent, approvalFee };
