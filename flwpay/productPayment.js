@@ -1,23 +1,15 @@
-const axios = require("axios").default;
 const express = require("express");
 const Product = require("../models/product");
 const User = require("../models/user");
 const router = express.Router();
 const convs = require("./convertCur");
+const makePayment = require("./initFlw").makePayment;
 
-const opt = {
-  method: "post",
-  url: "https://api.flutterwave.com/v3/payments",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: "Bearer {{" + process.env.FLWSECRETKEY + "}}",
-  },
-};
-
-router.post("/", (res, req) => {
+router.post("/", async (res, req) => {
   const cur = req.body.currency; //integer
   const userId = req.body.userId;
   const productId = req.body.productId;
+  const shopId = req.body.shopId;
 
   User.findById(userId)
     .then((user) => {
@@ -34,12 +26,13 @@ router.post("/", (res, req) => {
             tx_ref: "hooli-tx-1920bbtytty",
             amount: convs.convCur(productPrice, cur),
             currency: convs.getRealCur(cur),
-            redirect_url: "./validatePayment.js",
-            //payment_options: "card",
-            meta: {
-              consumer_id: 23,
-              consumer_mac: "92a3-912ba-1192a",
-            },
+            redirect_url: "http://localhost:"+ process.env.PORT + "/api/flw/validatePayment",
+        //payment_options: "card",
+        meta: {
+          payment_type: "product",
+          delfee: 2000,
+          shopid: shopId,
+        },
             customer: {
               email: email,
               phonenumber: phone,
@@ -51,14 +44,12 @@ router.post("/", (res, req) => {
             },
           };
 
-          axios
-            .post(url, userData, opt)
-            .then(function (result) {
-              if (result.body.status == "success") {
-                res.status(200).json({ msg: result.body.data.link });
-              }
-            })
-            .catch(function (err) {});
+          const msg = await makePayment(userData);
+          if(msg != null){
+            res.status(200).json({ msg: result.body.data.link });
+          }else{
+            res.status(400).json({ msg: msg });
+          }
         })
         .catch((err) => res.status(400).json({ msg: err }));
     })

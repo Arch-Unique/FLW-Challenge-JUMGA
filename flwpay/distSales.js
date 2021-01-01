@@ -1,21 +1,14 @@
-const { default: axios } = require("axios");
 const { productPercent, deliveryPercent } = require("../config/constants");
 const Shop = require("../models/shop");
+const flw = require("./initFlw").flw;
 
-const opt = {
-  method: "post",
-  url: "https://api.flutterwave.com/v3/bulk-transfers",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: "Bearer {{" + process.env.FLWSECRETKEY + "}}",
-  },
-};
-
-const distSales = (amt, delFee, shopId) => {
+const distSales = async (amt, delFee, shopId) => {
   //get the respective prices for each party
   const sellerGains = (100 - productPercent) * amt;
   const riderGains = (100 - deliveryPercent) * delFee;
+  let msg = "Failure";
 
+  //get shop details
   Shop.findById(shopId).then((shop) => {
     const rider = shop.dispatch_rider;
     const seller = shop.owner;
@@ -26,11 +19,12 @@ const distSales = (amt, delFee, shopId) => {
       bulk_data: [riderTxnType, sellerTxnType],
     };
 
-    axios
-      .post(url, data, opt)
-      .then((result) => {})
-      .catch((err) => {});
+    const res = await flw.Transfer.bulk(data);
+    msg = res.data.status;
+
   });
+
+  return msg;
 };
 
 //available to GBP,NGN,GHS
@@ -60,8 +54,8 @@ const bankTransfer = (user, amt) => {
     defOpt["meta"] = [
       {
         AccountNumber: user.bank_details.acct_no,
-        RoutingNumber: "BECFDE7HKKX",
-        SwiftCode: "BECFDE7HKKX",
+        RoutingNumber: user.bank_details.routing_no,
+        SwiftCode: user.bank_details.swift_code,
         BankName: user.bank_details.acct_no,
         BeneficiaryName: user.name,
         BeneficiaryCountry: "DE",
@@ -89,6 +83,7 @@ const mobileMoney = (user, amt) => {
   };
 };
 
+//get transaction type
 const getTrxType = (user, amt) => {
   return user.txType == 1 ? bankTransfer(user, amt) : mobileMoney(user, amt);
 };

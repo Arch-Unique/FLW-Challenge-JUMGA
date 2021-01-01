@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
-    username: {
+    name: {
       type: String,
       required: true,
       unique: true,
@@ -22,9 +22,28 @@ const userSchema = new Schema(
         message: "Invalid Email",
       },
     },
+    phone: Number,
     password: {
       type: String,
       required: true,
+    },
+    country: String,
+    bank_details: {
+      acc_no: Number,
+      bank_name: String,
+      branch_code: Number,
+      swift_code: String,
+      routing_no: String,
+    },
+    address: {
+      postal_code: String,
+      street_number: String,
+      street_name: String,
+      city: String,
+    },
+    momo: {
+      name: String,
+      phone: String,
     },
     is_dispatch_rider: {
       type: Boolean,
