@@ -9,7 +9,7 @@ const distSales = async (amt, delFee, shopId) => {
   let msg = "Failure";
 
   //get shop details
-  Shop.findById(shopId).then((shop) => {
+  Shop.findById(shopId).then(async (shop) => {
     const rider = shop.dispatch_rider;
     const seller = shop.owner;
     const riderTxnType = getTrxType(rider, riderGains);
@@ -21,7 +21,6 @@ const distSales = async (amt, delFee, shopId) => {
 
     const res = await flw.Transfer.bulk(data);
     msg = res.data.status;
-
   });
 
   return msg;

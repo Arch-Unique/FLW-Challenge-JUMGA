@@ -19,6 +19,7 @@ const productSchema = new Schema(
       type: Number,
       default: 3,
     },
+    quantity: Number,
   },
   {
     timestamps: true,

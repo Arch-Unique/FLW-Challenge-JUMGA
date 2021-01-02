@@ -55,3 +55,5 @@ router.post("/", async (res, req) => {
     })
     .catch((err) => res.status(400).json({ msg: err }));
 });
+
+module.exports = router;

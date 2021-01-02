@@ -1,25 +1,9 @@
-/*--------------------------------------------------------------------- File Name: style.css ---------------------------------------------------------------------*/
-
-
-/*--------------------------------------------------------------------- import Fonts ---------------------------------------------------------------------*/
-
-@import url('https://fonts.googleapis.com/css?family=Rajdhani:300,400,500,600,700');
-@import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
-
-/*****---------------------------------------- 1) font-family: 'Rajdhani', sans-serif;
- 2) font-family: 'Poppins', sans-serif;
- ----------------------------------------*****/
-
-
-/*--------------------------------------------------------------------- import Files ---------------------------------------------------------------------*/
-
 @import url(animate.min.css);
 @import url(normalize.css);
 @import url(meanmenu.css);
 @import url(owl.carousel.min.css);
 @import url(slick.css);
 @import url(jquery-ui.css);
-@import url(nice-select.css);
 
 /*--------------------------------------------------------------------- skeleton ---------------------------------------------------------------------*/
 
@@ -28,17 +12,27 @@
      transition: ease all 0.5s;
 }
 
+
+@font-face {
+     font-family: 'Quicksand';
+     src: url("../font/Quicksand.ttf");
+     font-weight: normal;
+     font-style: normal;
+   }
+
 html {
      scroll-behavior: smooth;
 }
 
 body {
-     color: #666666;
+     height: 100vh;
+     background: linear-gradient(135deg, blue 40%,indigo);
      font-size: 14px;
-     font-family: poppins;
+     font-family: "Quicksand";
      line-height: 1.80857;
      font-weight: normal;
      overflow-x: hidden;
+
 }
 
 a {
@@ -174,6 +168,10 @@ img {
      color: #767676;
      margin: 0;
      padding: 0;
+}
+
+.details a h3 {
+     color: white;
 }
 
 .form-control:focus {
@@ -356,6 +354,7 @@ a.readmore_bt {
      display: flex;
      justify-content: center;
      align-items: center;
+     animation-duration: 1s;
 }
 
 .loader img {
@@ -633,7 +632,7 @@ ul.top_icon li a {
 }
 
 .dropdown-bar.right-dropdown-language>a::after {
-     font-family: 'FontAwesome';
+     font-family: "Quicksand";
      content: "\f107";
      text-decoration: none;
      padding-left: 4px;
@@ -689,7 +688,7 @@ ul.top_icon li a {
 }
 
 .dropdown-bar.right-dropdown-currency>a::after {
-     font-family: 'FontAwesome';
+     font-family: "Quicksand";
      content: "\f107";
      text-decoration: none;
      padding-left: 4px;
@@ -783,7 +782,7 @@ ul.top_icon li a {
      box-shadow: 0px 1px 10px -1px rgba(0, 0, 0, 0.2);
 }
 
-.header-search .btn-group.bootstrap-select {
+.header-search {
      position: absolute;
      left: 0px;
      top: 0px;
@@ -1029,7 +1028,7 @@ ul.top_icon li a {
 .actions .btn-process {
      padding: 5px 16px;
      color: #ffffff;
-     font-family: 'Roboto', sans-serif;
+     font-family: "Quicksand";
      font-size: 14px;
      border-radius: 2px;
      overflow: hidden;
@@ -1063,7 +1062,7 @@ ul.top_icon li a {
 .main-menu ul {
      margin: 0;
      list-style-type: none;
-     margin-bottom: 10px;
+     
 }
 
 .main-menu ul>li {
@@ -1566,7 +1565,7 @@ a.slide_banner:hover::before {
 }
 input[type="checkbox"].styled:checked+label:after,
 input[type="radio"].styled:checked+label:after {
-     font-family: 'FontAwesome';
+     font-family: "Quicksand";
      content: "\f00c";
 }
 input[type="checkbox"] .styled:checked+label::before,
@@ -1616,7 +1615,6 @@ input[type="radio"] .styled:checked+label::after {
      border: indianred;
      max-width: 170px;
      width: 100%;
-     margin-right: 10px;
      border-radius: 25px;
 }
 .btn-primary:hover {
@@ -1639,14 +1637,14 @@ input[type="radio"] .styled:checked+label::after {
      padding: 0px 0px 0px 0px;
      font-size: 50px;
      font-weight: bold;
-     color: #136af8;
+     color: #fff;
      line-height: 50px;
      position: relative;
      margin-bottom: 20px;
 }
 
 .titlepage span {
-     color: #141012;
+     color: #fff;
 font-size: 17px;
 line-height: 31px;
 display: block;
@@ -2102,17 +2100,56 @@ ul.location_icon span {
     text-align: center;
     padding: 17px 0px; }
 
-
-.sport_product {
-    padding: 40px 20px;
-    background: #fff;
+.spoduct{
+     border: 2px solid black;
     text-align: center;
-
 }
-.price_text {font-size: 20px; color: #1369f5;}
 
-.sport_product figure {margin:0;}
-.sport_product figure img {height: 300px;}
+.shopitem{
+     text-align: center;
+}
+
+.shopitem:hover{
+    cursor: pointer;
+    background-color: teal;
+    padding: 20px;
+}
+
+
+.shopitem h4{
+     vertical-align: bottom;
+}
+
+.shopitem img{
+     height: 300px;
+}
+
+hr {
+     border: 0;
+     clear: both;
+     display: block;
+     width: 100%;
+     background-color: white;
+     height: 2px;
+}
+
+.spoduct img{
+     height: 105px;
+}
+
+.spoduct h3,h4{
+     color: white;
+     text-transform: capitalize;
+}
+
+.spoduct:hover {
+     cursor: pointer;
+     background-color: rgb(10, 56, 109);
+     margin: 10px 0 10px 0;
+}
+
+.price_text {font-size: 20px; color: #fff; font-family: "Quicksand";}
+
 .new-text {
 
     position: absolute;
@@ -2168,26 +2205,24 @@ line-height: 25px;
 padding-top: 25px;
 }
 .sport_product h4 {
-     color: #000;
+     color: #fff;
      font-size: 24px;
 line-height: 24px;
 padding: 10px 0px 0px 0px;
 }
 .price_text{
     
-     text-align: center;
 font-size: 29px;
-color: #136af8;
-padding-top: 25px;
+color: #fff;
+font-family: "Quicksand";
+padding-top: 10px;
 line-height: 25px;
 font-weight:normal;
 } 
 
 .price{
-  
-     text-align: center;
      font-size: 29px;
-     color: #081b30;
+     color: #fff;
 } 
 
 .basket_text{
@@ -2341,11 +2376,11 @@ line-height: 30px;
      float: left;
      background-color: #081b30;
      height: auto;
-     padding-top: 71px;
-     padding-bottom: 72px;
+     padding-top: 48px;
+     padding-bottom: 48px;
      text-align: center;
-     font-family: apple;
-     font-size: 180px;
+     font-family: "Quicksand";
+     font-size: 100px;
      color: #fff;
 }
 
@@ -2563,7 +2598,7 @@ button.btn.btn-primary,button.btn.btn-primary:hover,button.btn.btn-primary:focus
 
 
 .product {padding-top: 90px;}
-.product .titlepage h2 {color: #136af8;}
+.product .titlepage h2 {color: #000;}
 .black {color: #000;}
 .section_Clients .titlepage h2{
    padding: 0px 0px 0px 0px;
