@@ -23,7 +23,7 @@ router.post("/", async (res, req) => {
           const productPrice = product.amount;
 
           let userData = {
-            tx_ref: "hooli-tx-1920bbtytty",
+            tx_ref: `${name}-${productId}-${Date.now()}`,
             amount: convs.convCur(productPrice, cur),
             currency: convs.getRealCur(cur),
             redirect_url:
@@ -43,25 +43,24 @@ router.post("/", async (res, req) => {
             },
             customizations: {
               title: productName,
-              logo: __dirname + "/public/images/logo.png",
+              logo:
+                "http://localhost:" +
+                process.env.PORT +
+                "/public/images/logo.png",
             },
           };
 
           makePayment(userData)
             .then((msg) => {
-              if (msg != null) {
-                res.status(200).json({ msg: result.body.data.link });
-              } else {
-                res.status(400).json({ msg: msg });
-              }
+              res.status(msg != null ? 200 : 400).json({ msg: msg });
             })
             .catch((err) => {
               res.status(400).json({ msg: err });
             });
         })
-        .catch((err) => res.status(400).json({ msg: err }));
+        .catch((err) => res.status(400).json({ data: err }));
     })
-    .catch((err) => res.status(400).json({ msg: err }));
+    .catch((err) => res.status(400).json({ data: err }));
 });
 
 module.exports = router;

@@ -16,6 +16,8 @@ router.post("/", (req, res) => {
 //get user
 router.get("/:id", (req, res) => {
   const id = req.params.id;
+  console.log(id);
+
   User.findById(id)
     .then((result) => res.status(200).json({ msg: result }))
     .catch((err) => res.status(400).json({ msg: err }));

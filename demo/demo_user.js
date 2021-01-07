@@ -2,82 +2,8 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const Shop = require("../models/shop");
-
-// const allUsers = [
-//   {
-//     name: "Arch",
-//     email: "arch@gmail.com",
-//     phone: "08034567890",
-//     country: "Nigeria",
-//     acct_no: "0690000031",
-//     bank_name: "044",
-//   },
-//   {
-//     name: "Baddo",
-//     email: "baddo@gmail.com",
-//     phone: "08034565860",
-//     country: "Nigeria",
-//     acct_no: "0690000033",
-//     bank_name: "044",
-//   },
-//   {
-//     name: "John",
-//     email: "john@gmail.com",
-//     phone: "08034567810",
-//     country: "Nigeria",
-//     acct_no: "0690000034",
-//     bank_name: "044",
-//   },
-// ];
-
-// const allDriders = [
-//   {
-//     name: "Sanches",
-//     email: "sanchez@gmail.com",
-//     phone: "08034567890",
-//     country: "Nigeria",
-//     acct_no: "0690000032",
-//     bank_name: "044",
-//   },
-//   {
-//     name: "Alexis",
-//     email: "alexis@gmail.com",
-//     phone: "08034565860",
-//     country: "Nigeria",
-//     acct_no: "0690000035",
-//     bank_name: "044",
-//   },
-//   {
-//     name: "Henry",
-//     email: "henry@gmail.com",
-//     phone: "08034567810",
-//     country: "Nigeria",
-//     acct_no: "0690000036",
-//     bank_name: "044",
-//   },
-// ];
-
-// router.get("/", (req, res) => {
-//   allUsers.forEach((user) => {
-//     User.create({
-//       name: user.name,
-//       email: user.email,
-//       phone: user.phone,
-//       country: user.country,
-//       bank_details: {
-//         acc_no: user.acct_no,
-//         bank_name: user.bank_name,
-//       },
-//       is_dispatch_rider: false,
-//     })
-//       .then((res) => {
-//         console.log("User created successfully");
-//       })
-//       .catch((err) => {
-//         res.status(400).json({ msg: err });
-//       });
-//   });
-// });
+const Product = require("../models/product");
+const faker = require("faker");
 
 // Sample user
 router.get("/user", async (req, res) => {
@@ -159,7 +85,7 @@ router.post("/shop", (req, res) => {
     drider = doc[1];
   });
 
-  req.body["dispatch_rider"] = drider;
+  req.body["dispatch_rider"] = drider.id;
   const shop = new Shop(req.body);
 
   owner.shops.push(shop);
@@ -167,6 +93,61 @@ router.post("/shop", (req, res) => {
     if (err) throw err;
     res.status(200).json({ msg: user.shops[0] });
   });
+});
+
+//demo
+router.get("/", async (req, res) => {
+  let users;
+
+  users = await User.find();
+  const countries = ["Nigeria", "UK", "Kenya", "Ghana"];
+  if (users.length != 0) {
+    res.status(200).json({ msg: users[0] });
+  } else {
+    try {
+      for (let i = 0; i < 8; i++) {
+        await User.create({
+          name: faker.name.firstName(i % 2),
+          email: faker.internet.email(i % 2),
+          phone: faker.phone.phoneNumber(),
+          country: countries[i % 4],
+          is_dispatch_rider: i > 3,
+        });
+      }
+
+      let users = await User.find();
+      for (let j = 1; j < 4; j++) {
+        const user = users[j];
+        let shop = await Shop.create({
+          owner: user.id,
+          dispatch_rider: users[j + 4].id,
+          name: faker.name.lastName(j % 2),
+          description: faker.internet.userName(),
+          is_approved: true,
+        });
+
+        const products = ["T-Shirt", "BasketBall", "Game"];
+        for (let k = 0; k < 3; k++) {
+          let img = "images/" + products[k].toLowerCase() + ".png";
+          let product = await Product.create({
+            name: products[k],
+            description: faker.commerce.productDescription(),
+            images: img,
+            price: (k + 1) * 10 * (faker.random.number(5) + 1),
+            quantity: faker.random.number(500),
+          });
+          shop.products.push(product);
+        }
+        user.shops.push(shop);
+        await user.save;
+      }
+
+      let products = await Product.find();
+      res.status(200).json({ msg: users[0], products: products });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 });
 
 module.exports = router;

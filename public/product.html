@@ -18,16 +18,9 @@
       <link rel="stylesheet" href="css/style.css">
       <!-- Responsive-->
       <link rel="stylesheet" href="css/responsive.css">
-      <!-- fevicon -->
-      <link rel="icon" href="images/fevicon.png" type="image/gif" />
       <!-- Scrollbar Custom CSS -->
       <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
       <!-- Tweaks for older IEs-->
-      <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-      <!-- owl stylesheets --> 
-      <link rel="stylesheet" href="css/owl.carousel.min.css">
-      <link rel="stylesheet" href="css/owl.theme.default.min.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
       <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -35,9 +28,12 @@
    <!-- body -->
    <body class="main-layout" >
       <!-- loader  -->
-      <!-- <div class="loader_bg">
-         <div class="loader"><img src="images/loading.gif" alt="#" /></div>
-      </div> -->
+      <div class="loader_bg" style="display: none;">
+         <div class="loader">
+            <img src="images/loading.gif" alt="#" />
+            <h3>Loading ...</h3>
+         </div>
+      </div>
       <!-- end loader -->
       <!-- header -->
       <div class="section">
@@ -63,7 +59,7 @@
                                  <li><a href="contact.html">Contact Us</a></li>
                                  <li class="last"><a href="profile.html"><div style="display: block;">
                                     <img src="images/profile.png" alt="icon"/>
-                                    <h4 style="text-transform: capitalize;">Hi Arch</h4>
+                                    <h4 id="prof" style="text-transform: capitalize;">Hi Arch</h4>
                                  </div></a></li>
                               </ul>
                            </nav>
@@ -109,8 +105,6 @@
       <!-- sidebar -->
       <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
       <script src="js/custom.js"></script>
-      <!-- javascript --> 
-      <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
       <script>
          $(document).ready(function(){
          $(".fancybox").fancybox({
@@ -127,19 +121,26 @@
          });
 
          const params = new URLSearchParams(window.location.search);
-         if(params.has('name') && params.has('price')){
-            $("#productTitle").html(params.get('name'));
-            $("#productPrice").html(params.get('price'));
-            $("#productImage").attr("src", "images/" + params.get('img'));
+         if(params.has('id')){
+            let prodid = params.get('id');
+            $.get("http://localhost:3000/api/products/"+prodid,function(data,status,xhr){
+               if(xhr.status == 200){
+                  $("#productTitle").html(data.msg.name);
+            $("#productPrice").html(data.msg.price);
+            $("#productImage").attr("src",data.msg.images);
+               }
+            });
          }
 
          $("#payBtn").click((e) => {
+            $(".loader_bg").show();
             $.post("http://localhost:3000/api/flw/productPayment/", {
 
             }, function(data,status,xhr){
                if(xhr.status == 200){
                   window.location.href = data.msg;
                }else{
+                  $(".loader_bg").hide();
                   alert(data.msg);
                }
             })

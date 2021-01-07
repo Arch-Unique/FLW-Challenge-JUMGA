@@ -38,7 +38,7 @@ router.get("/:userId&:currency", async (req, res) => {
       },
       customizations: {
         title: "Shop Approval Fee",
-        logo: __dirname + "/public/images/logo.png",
+        logo: "http://localhost:" + process.env.PORT + "/images/logo.png",
       },
     };
 

@@ -14,7 +14,7 @@ router.post("/user/:id", (req, res) => {
     if (err) {
       throw err;
     }
-    body.owner = user;
+    body.owner = id;
     let myshop = new Shop(body);
 
     user.shops.push(myshop);
@@ -62,16 +62,6 @@ router.delete("/:id", (req, res) => {
       res.status(200).json({ msg: "shop successfully deleted" })
     )
     .catch((err) => res.status(400).json({ msg: err }));
-});
-
-//get all shops
-router.get("/", (req, res) => {
-  const id = req.params.id;
-
-  Shop.find(function (err, shops) {
-    if (err) throw err;
-    res.status(200).json({ msg: shops });
-  });
 });
 
 module.exports = router;

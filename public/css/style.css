@@ -175,6 +175,10 @@ img {
      color: white;
 }
 
+.details a:hover{
+     cursor: pointer;
+}
+
 .form-control:focus {
      border-color: #ffffff !important;
      box-shadow: 0 0 0 .2rem rgba(255, 255, 255, .25);
@@ -1818,9 +1822,6 @@ img.zoom {
 .modal-title {
      color: #000;
 }
-.modal-footer {
-     display: none;
-}
 
 /** end section **/
 .margin-r-l {
@@ -2384,8 +2385,10 @@ line-height: 30px;
      padding-top: 48px;
      padding-bottom: 48px;
      text-align: center;
+}
+
+.soc_text h1{
      font-family: "Quicksand";
-     font-size: 100px;
      color: #fff;
 }
 

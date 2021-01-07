@@ -148,31 +148,22 @@ $(function () {
     );
   });
 
-  $(".spoduct").click((e) => {
-    let src = e.currentTarget;
-    let name = src.querySelector("h4").innerText;
-    let price = src.querySelector("h3").innerText;
-
-    let img = src.querySelector("img").getAttribute("src");
-    img = img.substr(img.indexOf("/") + 1, img.indexOf("."));
-    window.location.href =
-      "./product.html?name=" +
-      name +
-      "&price=" +
-      price.substr(1, price.length) +
-      "&img=" +
-      img;
-  });
-
-  $(".shopitem").click((e) => {
-    let src = e.currentTarget;
-    let name = src.querySelector("h4").innerText;
-    let img = src.querySelector("img").getAttribute("src");
-    img = img.substr(img.indexOf("/") + 1, img.indexOf("."));
-    window.location.href = "./allproducts.html?name=" + name + "&img=" + img;
-  });
-
   $(document).ready(function () {
+    $(".spoduct").click((e) => {
+      let src = e.currentTarget;
+      let product_id = src.querySelector("input").getAttribute("value");
+      window.location.href = "./product.html?id=" + product_id;
+    });
+
+    $(".shopitem").click((e) => {
+      console.log("shopitem");
+      let src = e.currentTarget;
+      let id = src.querySelector("input").getAttribute("value");
+      let img = src.querySelector("img").getAttribute("src");
+      img = img.substr(img.indexOf("/") + 1, img.indexOf("."));
+      window.location.href = "./allproducts.html?id=" + id + "&img=" + img;
+    });
+
     $("#addshop").click((e) => {
       let userId = sessionStorage.getItem("userId");
       let currency = $("#countrySelect").val();
@@ -188,7 +179,6 @@ $(function () {
       $.get(url, function (data, status, xhr) {
         console.log(data);
         if (xhr.status == 200) {
-          $(".loader_bg").hide();
           window.location.href = data.msg;
         } else {
           $(".loader_bg").hide();
@@ -204,6 +194,10 @@ $(function () {
     submitHandler: function () {
       alert("submitted!");
     },
+  });
+
+  $(document).ready(function () {
+    $("#prof").html(`Hi ${sessionStorage.getItem("userName")}`);
   });
 
   $(document).ready(function () {

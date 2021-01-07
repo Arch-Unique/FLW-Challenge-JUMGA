@@ -7,6 +7,7 @@ const flwPaymentRoute = require("./flwpay/validatePayment");
 const productPaymentRoute = require("./flwpay/productPayment");
 const shopPaymentRoute = require("./flwpay/shopFeePayment");
 const demoUser = require("./demo/demo_user");
+const allItems = require("./routes/allitems");
 
 //get db connection
 require("./config/connection");
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/users", userRoute);
 app.use("/api/products/", productRoute);
 app.use("/api/shops/", shopRoute);
+app.use("/api/all/", allItems);
 app.use("/api/flw/validatePayment/", flwPaymentRoute);
 app.use("/api/flw/productPayment/", productPaymentRoute);
 app.use("/api/flw/shopFeePayment/", shopPaymentRoute);
