@@ -35,9 +35,12 @@
    <!-- body -->
    <body class="main-layout" >
       <!-- loader  -->
-      <!-- <div class="loader_bg">
-         <div class="loader"><img src="images/loading.gif" alt="#" /></div>
-      </div> -->
+      <div class="loader_bg">
+         <div class="loader">
+            <img src="images/loading.gif" alt="#" />
+            <h4 id="progText" style="display: block;">Creating Demo Account ...</h3>
+         </div>
+      </div>
       <!-- end loader -->
       <!-- header -->
       <div class="section">
@@ -145,9 +148,33 @@
       <script src="js/plugin.js"></script>
       <!-- sidebar -->
       <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+      <script>
+             $(document).ready(function(){
+                if(sessionStorage.getItem("userId") == null){
+                  $.ajax({
+                  type:'GET',
+                  url: 'http://localhost:3000/api/demo/user',
+                  success: function(data,status, jqXHR) {
+                     if(jqXHR.status == 200){
+                        sessionStorage.setItem("userId",data.msg);
+                        setTimeout(function () {
+                           $(".loader_bg").fadeToggle();
+                           $("#progText").html("Finishing Up ...")
+                        }, 1000);
+                     }else{
+                        $("#progText").html(data);
+                     }
+                     console.log(data); 
+                  }, error: function(jqXHR, textStatus, errorThrown) {
+                         console.log(errorThrown); 
+                  }});
+               }else{
+                  console.log(sessionStorage.getItem("userId"));
+                  $(".loader_bg").hide();
+               }});
+      </script>
       <script src="js/custom.js"></script>
       <!-- javascript --> 
-      <script src="js/owl.carousel.js"></script>
       <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
       <script>
          $(document).ready(function(){

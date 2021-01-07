@@ -22,11 +22,12 @@
 
 html {
      scroll-behavior: smooth;
+     height: 100%;
 }
 
 body {
-     height: 100vh;
-     background: linear-gradient(135deg, blue 40%,indigo);
+     /* height: 100%; */
+     background: blueviolet;
      font-size: 14px;
      font-family: "Quicksand";
      line-height: 1.80857;
@@ -359,6 +360,10 @@ a.readmore_bt {
 
 .loader img {
      width: 280px;
+}
+
+.loader h4 {
+     color: black;
 }
 
 

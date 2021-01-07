@@ -59,7 +59,7 @@
                               <ul class="menu-area-main">
                                  <li> <a href="index.html">Home</a> </li>
                                  <li> <a href="about.html">About</a> </li>
-                                 <li><a href="clients.html">Shop</a></li>
+                                 <li><a href="shops.html">Shop</a></li>
                                  <li><a href="contact.html">Contact Us</a></li>
                                  <li class="last"><a href="profile.html"><div style="display: block;">
                                     <img src="images/profile.png" alt="icon"/>
@@ -73,20 +73,20 @@
                </div>
                <div class="row" style="margin-top: 15px;">
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                   <figure><img src="images/basketball.png" alt="img"/></figure>
+                   <figure><img id="productImage" alt="img"/></figure>
                 </div>
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                   <h2 style="color: white; font-weight: bolder;">Basket Ball</h2>
+                   <h2 id="productTitle" style="color: white; font-weight: bolder;"></h2>
                    <h4> 
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime dicta quaerat reiciendis quia maiores laboriosam enim! Sequi laudantium molestias tempore consequatur! Dolores vero magnam adipisci harum at sed ducimus officia. <br>   
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, doloremque maxime? Tempore aspernatur, enim similique pariatur cum voluptatem quaerat ipsa ullam delectus animi perferendis minus magni mollitia! Ipsam, praesentium perferendis!</h4><br><br>
                    <hr>
                    <div class="row" >
                        <div class="col-6" >
-                        <h3><strong class="price_text">$50.00</strong></h3>
+                        <h3><strong class="price_text">$</strong><strong class="price_text" id="productPrice">50.00</strong></h3>
                        </div>
                        <div class="col-6">
-                        <button class="btn btn-primary" >Pay Now</button>
+                        <button class="btn btn-primary" id="payBtn">Pay Now</button>
                        </div>
                    </div>
                     
@@ -110,7 +110,6 @@
       <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
       <script src="js/custom.js"></script>
       <!-- javascript --> 
-      <script src="js/owl.carousel.js"></script>
       <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
       <script>
          $(document).ready(function(){
@@ -126,6 +125,26 @@
          
          $(this).removeClass('transition');
          });
+
+         const params = new URLSearchParams(window.location.search);
+         if(params.has('name') && params.has('price')){
+            $("#productTitle").html(params.get('name'));
+            $("#productPrice").html(params.get('price'));
+            $("#productImage").attr("src", "images/" + params.get('img'));
+         }
+
+         $("#payBtn").click((e) => {
+            $.post("http://localhost:3000/api/flw/productPayment/", {
+
+            }, function(data,status,xhr){
+               if(xhr.status == 200){
+                  window.location.href = data.msg;
+               }else{
+                  alert(data.msg);
+               }
+            })
+         });
+
          });
          
       </script> 

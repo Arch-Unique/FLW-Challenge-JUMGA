@@ -6,6 +6,7 @@ const shopRoute = require("./routes/shops");
 const flwPaymentRoute = require("./flwpay/validatePayment");
 const productPaymentRoute = require("./flwpay/productPayment");
 const shopPaymentRoute = require("./flwpay/shopFeePayment");
+const demoUser = require("./demo/demo_user");
 
 //get db connection
 require("./config/connection");
@@ -23,6 +24,7 @@ app.use("/api/shops/", shopRoute);
 app.use("/api/flw/validatePayment/", flwPaymentRoute);
 app.use("/api/flw/productPayment/", productPaymentRoute);
 app.use("/api/flw/shopFeePayment/", shopPaymentRoute);
+app.use("/api/demo/", demoUser);
 
 // A simple get
 app.use(express.static(__dirname + "/public"));

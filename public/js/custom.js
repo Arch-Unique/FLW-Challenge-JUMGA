@@ -148,12 +148,54 @@ $(function () {
     );
   });
 
-  $(".spoduct").on("click", () => {
-    window.location.href = "./product.html";
+  $(".spoduct").click((e) => {
+    let src = e.currentTarget;
+    let name = src.querySelector("h4").innerText;
+    let price = src.querySelector("h3").innerText;
+
+    let img = src.querySelector("img").getAttribute("src");
+    img = img.substr(img.indexOf("/") + 1, img.indexOf("."));
+    window.location.href =
+      "./product.html?name=" +
+      name +
+      "&price=" +
+      price.substr(1, price.length) +
+      "&img=" +
+      img;
   });
 
-  $(".shopitem").on("click", () => {
-    window.location.href = "./allproducts.html";
+  $(".shopitem").click((e) => {
+    let src = e.currentTarget;
+    let name = src.querySelector("h4").innerText;
+    let img = src.querySelector("img").getAttribute("src");
+    img = img.substr(img.indexOf("/") + 1, img.indexOf("."));
+    window.location.href = "./allproducts.html?name=" + name + "&img=" + img;
+  });
+
+  $(document).ready(function () {
+    $("#addshop").click((e) => {
+      let userId = sessionStorage.getItem("userId");
+      let currency = $("#countrySelect").val();
+      let url =
+        "http://localhost:3000/api/flw/shopFeePayment/" +
+        userId +
+        "&" +
+        currency;
+
+      $(".loader_bg").show();
+      $("#progText").html("Loading ...");
+
+      $.get(url, function (data, status, xhr) {
+        console.log(data);
+        if (xhr.status == 200) {
+          $(".loader_bg").hide();
+          window.location.href = data.msg;
+        } else {
+          $(".loader_bg").hide();
+          alert("error");
+        }
+      });
+    });
   });
 
   /* Contact-form

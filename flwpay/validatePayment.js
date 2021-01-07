@@ -3,8 +3,9 @@ const router = express.Router();
 const axios = require("axios").default;
 const flw = require("./initFlw").flw;
 const distSales = require("./distSales");
+const demoShopURL = "http://localhost:" + process.env.PORT + "/api/demo/shop";
 
-router.post("/", async (req, res) => {
+router.get("/", async (req, res) => {
   const txRef = req.query.tx_ref;
   const txId = req.query.transaction_id;
   const txStatus = req.query.status;
@@ -16,36 +17,56 @@ router.post("/", async (req, res) => {
     if (response.status == "success" && txRef == data.tx_ref) {
       if (data.meta.payment_type == "shop") {
         axios
-          .post("", {
+          .post(demoShopURL, {
             name: data.meta.title,
             description: data.meta.desc,
             is_approved: true,
           })
           .then((result) => {
             if (result.status == 200) {
-              res.status(200).json({ msg: result.data.msg });
+              res.redirect(
+                "http://localhost:" +
+                  process.env.PORT +
+                  "/profile.html?msg=Success"
+              );
             }
           })
           .catch((err) => {
-            res.status(400).json({ msg: err });
+            res.redirect(
+              "http://localhost:" +
+                process.env.PORT +
+                "/profile.html?msg=Failed"
+            );
           });
       } else {
         //do something here for the payment
         distSales(data.amount, data.meta.delfee, data.meta.shopid).then(
-          (res) => {
-            if (res == "success") {
-              res.status(200).json({ msg: "Transaction Successful" });
+          (result) => {
+            if (result == "success") {
+              res.redirect(
+                "http://localhost:" +
+                  process.env.PORT +
+                  "/product.html?msg=Success"
+              );
             } else {
-              res.status(400).json({ msg: "Transaction Failed" });
+              res.redirect(
+                "http://localhost:" +
+                  process.env.PORT +
+                  "/product.html?msg=Failed"
+              );
             }
           }
         );
       }
     } else {
-      res.status(404).json({ msg: "Transaction Failed" });
+      res.redirect(
+        "http://localhost:" + process.env.PORT + "/profile.html?msg=Failed"
+      );
     }
   } else {
-    res.status(404).json({ msg: "Transaction Failed" });
+    res.redirect(
+      "http://localhost:" + process.env.PORT + "/profile.html?msg=Failed"
+    );
   }
 });
 

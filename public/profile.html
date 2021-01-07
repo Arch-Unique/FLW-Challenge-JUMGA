@@ -35,9 +35,12 @@
    <!-- body -->
    <body class="main-layout" >
       <!-- loader  -->
-      <!-- <div class="loader_bg">
-         <div class="loader"><img src="images/loading.gif" alt="#" /></div>
-      </div> -->
+      <div class="loader_bg" style="display: none;">
+         <div class="loader">
+            <img src="images/loading.gif" alt="#" />
+            <h4 id="progText">Loading ...</h3>
+         </div>
+      </div>
       <!-- end loader -->
       <!-- header -->
       <div class="section">
@@ -61,7 +64,7 @@
                                  <li> <a href="about.html">About</a> </li>
                                  <li><a href="shops.html">Shop</a></li>
                                  <li><a href="contact.html">Contact Us</a></li>
-                                 <li class="last"><a href="#"><div style="display: block;">
+                                 <li class="last"><a href="#" id="addshop"><div style="display: block;">
                                     <img src="images/add-shop.png" alt="icon"/>
                                     <h4 style="text-transform: capitalize;">Create Shop</h4>
                                  </div></a></li>
@@ -86,12 +89,12 @@
                               <input  type="text" class="form-control form-control-sm" placeholder="Phone" name="Phone">
                            </div>
                            <div class="form-group">
-                            <select style="font-size: small; color: #495057;" class="form-control form-control-lg" name="Country" aria-expanded="false">
-                                <option selected>Choose Country</option>
+                            <select style="font-size: small; color: #495057;" class="form-control form-control-lg" id="countrySelect" name="Country" aria-expanded="false">
+                                <option selected value="0">Choose Country</option>
                                 <option value="0">Nigeria</option>
-                                <option value="1">Kenya</option>
-                                <option value="2">Ghana</option>
-                                <option value="3">UK</option>
+                                <option value="2">Kenya</option>
+                                <option value="3">Ghana</option>
+                                <option value="1">UK</option>
                             </select>
                             </div>
                            
@@ -122,6 +125,14 @@
       
     </div>
 
+    <div id="myModal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <h3 id="tx_title" style="text-align: center; padding: 20px;"></h3>
+        </div>
+      </div>
+    </div>
+
       <!-- Javascript files-->
       <script src="js/jquery.min.js"></script>
       <script src="js/popper.min.js"></script>
@@ -132,10 +143,17 @@
       <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
       <script src="js/custom.js"></script>
       <!-- javascript --> 
-      <script src="js/owl.carousel.js"></script>
       <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
       <script>
          $(document).ready(function(){
+            
+            const params = new URLSearchParams(window.location.search);
+         if(params.has('msg')){
+            $("#tx_title").html("Transaction " + params.get('msg'));
+            $("#myModal").fadeToggle(1000);
+            $("#myModal").hide(1000);
+         }
+
          $(".fancybox").fancybox({
          openEffect: "none",
          closeEffect: "none"

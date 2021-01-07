@@ -22,14 +22,14 @@ const userSchema = new Schema(
         message: "Invalid Email",
       },
     },
-    phone: Number,
-    password: {
-      type: String,
-      required: true,
-    },
+    phone: String,
+    // password: {
+    //   type: String,
+    //   required: true,
+    // },
     country: String,
     bank_details: {
-      acc_no: Number,
+      acc_no: String,
       bank_name: String,
       branch_code: Number,
       swift_code: String,
@@ -61,28 +61,30 @@ const userSchema = new Schema(
   }
 );
 
-userSchema.pre("save", function (next) {
-  if (!this.isModified("password")) {
-    return next(null);
-  }
-  bcrypt.hash(this.password, 10, (err, passwordHash) => {
-    if (err) {
-      return next(err);
-    }
-    this.password = passwordHash;
-    next();
-  });
-});
+//PASSWORD FEATURE
 
-userSchema.methods.checkPass = function (password, cb) {
-  bcrypt.compare(password, this.password, (err, isMatch) => {
-    if (err) {
-      return cb(err);
-    } else {
-      return isMatch ? cb(null, this) : cb(null, isMatch);
-    }
-  });
-};
+// userSchema.pre("save", function (next) {
+//   if (!this.isModified("password")) {
+//     return next(null);
+//   }
+//   bcrypt.hash(this.password, 10, (err, passwordHash) => {
+//     if (err) {
+//       return next(err);
+//     }
+//     this.password = passwordHash;
+//     next();
+//   });
+// });
+
+// userSchema.methods.checkPass = function (password, cb) {
+//   bcrypt.compare(password, this.password, (err, isMatch) => {
+//     if (err) {
+//       return cb(err);
+//     } else {
+//       return isMatch ? cb(null, this) : cb(null, isMatch);
+//     }
+//   });
+// };
 
 const User = mongoose.model("User", userSchema);
 

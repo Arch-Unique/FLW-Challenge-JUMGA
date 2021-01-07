@@ -73,10 +73,10 @@
                </div>
                <div class="row" style="margin-top: 15px;">
                   <div class="col-6 d-flex align-items-center">
-                     <figure><img style="height: 100px;" src="images/basketball.png" alt="img"/></figure>
+                     <figure><img style="height: 100px;" id="shopImage" alt="img"/></figure>
                   </div>
                   <div class="col-6 d-flex align-items-center">
-                     <h3><strong class="price_text">Nightingale Shop</strong></h3>
+                     <h3><strong id="shopName" class="price_text"></strong></h3>
                   </div>
                </div>
                <div class="row" style="margin-top: 15px;">
@@ -119,7 +119,6 @@
       <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
       <script src="js/custom.js"></script>
       <!-- javascript --> 
-      <script src="js/owl.carousel.js"></script>
       <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
       <script>
          $(document).ready(function(){
@@ -135,6 +134,14 @@
          
          $(this).removeClass('transition');
          });
+
+         const params = new URLSearchParams(window.location.search);
+         if(params.has('name') && params.has('img')){
+            $("#shopName").html(params.get('name').split("%20").join(" "));
+            $("#shopImage").attr("src", "images/" + params.get('img'));
+
+         }
+
          });
          
       </script> 

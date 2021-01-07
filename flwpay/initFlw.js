@@ -7,16 +7,19 @@ const makePayment = async (payload) => {
     method: "post",
     url: "https://api.flutterwave.com/v3/payments",
     headers: {
+      Authorization: `Bearer ${process.env.FLWSECRETKEY}`,
       "Content-Type": "application/json",
-      Authorization: "Bearer {{" + process.env.FLWSECRETKEY + "}}",
     },
     data: payload,
   };
+
   try {
     const res = await axios(opt);
-    return res.body.status == "success" ? res.body.data.link : null;
+    console.log("res---" + res.data);
+    return res.data.status == "success" ? res.data.data.link : null;
   } catch (err) {
-    return err;
+    console.log("flwerr---" + err);
+    return null;
   }
 };
 

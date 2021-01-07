@@ -26,13 +26,16 @@ router.post("/", async (res, req) => {
             tx_ref: "hooli-tx-1920bbtytty",
             amount: convs.convCur(productPrice, cur),
             currency: convs.getRealCur(cur),
-            redirect_url: "http://localhost:"+ process.env.PORT + "/api/flw/validatePayment",
-        //payment_options: "card",
-        meta: {
-          payment_type: "product",
-          delfee: 2000,
-          shopid: shopId,
-        },
+            redirect_url:
+              "http://localhost:" +
+              process.env.PORT +
+              "/api/flw/validatePayment",
+            //payment_options: "card",
+            meta: {
+              payment_type: "product",
+              delfee: 2000,
+              shopid: shopId,
+            },
             customer: {
               email: email,
               phonenumber: phone,
@@ -44,12 +47,17 @@ router.post("/", async (res, req) => {
             },
           };
 
-          const msg = await makePayment(userData);
-          if(msg != null){
-            res.status(200).json({ msg: result.body.data.link });
-          }else{
-            res.status(400).json({ msg: msg });
-          }
+          makePayment(userData)
+            .then((msg) => {
+              if (msg != null) {
+                res.status(200).json({ msg: result.body.data.link });
+              } else {
+                res.status(400).json({ msg: msg });
+              }
+            })
+            .catch((err) => {
+              res.status(400).json({ msg: err });
+            });
         })
         .catch((err) => res.status(400).json({ msg: err }));
     })
