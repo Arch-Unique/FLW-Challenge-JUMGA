@@ -21,9 +21,13 @@ router.post("/user/:id", (req, res) => {
     user
       .save()
       .then((result) => {
-        res.status(200).json({ msg: "Shops successfully created" });
+        res.json({
+          status: "error",
+          msg: "Shops successfully created",
+          data: result,
+        });
       })
-      .catch((err) => res.status(400).json({ msg: err }));
+      .catch((err) => res.json({ status: "error", msg: err }));
   });
 });
 
@@ -31,16 +35,16 @@ router.post("/user/:id", (req, res) => {
 router.get("/user/:id", (req, res) => {
   const id = req.params.id;
   User.findById(id)
-    .then((user) => res.status(200).json({ msg: user.shops }))
-    .catch((err) => res.status(400).json({ msg: err }));
+    .then((user) => res.json({ status: "success", msg: user.shops }))
+    .catch((err) => res.json({ status: "error", msg: err }));
 });
 
 //get a particular user shop
 router.get("/:id", (req, res) => {
   const id = req.params.id;
   Shop.findById(id)
-    .then((shop) => res.status(200).json({ msg: shop }))
-    .catch((err) => res.status(400).json({ msg: err }));
+    .then((shop) => res.json({ status: "success", msg: shop }))
+    .catch((err) => res.json({ status: "error", msg: err }));
 });
 
 //edit a particular shop
@@ -48,9 +52,13 @@ router.patch("/:id", (req, res) => {
   const id = req.params.id;
   Shop.findByIdAndUpdate(id, req.body, function (err, result) {
     if (err) {
-      throw err;
+      res.json({ status: "error", msg: err });
     }
-    res.status(200).json({ msg: "shop successfully updated" });
+    res.json({
+      status: "success",
+      msg: "shop successfully updated",
+      data: result,
+    });
   });
 });
 
@@ -59,9 +67,9 @@ router.delete("/:id", (req, res) => {
   const id = req.params.id;
   Shop.findByIdAndDelete(quesId)
     .then((result) =>
-      res.status(200).json({ msg: "shop successfully deleted" })
+      res.json({ status: "success", msg: "shop successfully deleted" })
     )
-    .catch((err) => res.status(400).json({ msg: err }));
+    .catch((err) => res.json({ status: "error", msg: err }));
 });
 
 module.exports = router;

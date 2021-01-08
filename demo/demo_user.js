@@ -7,8 +7,6 @@ const faker = require("faker");
 
 // Sample user
 router.get("/user", async (req, res) => {
-  //res.status(200).json({ msg: "Hi test" });
-
   const name = "Arch";
   const email = "arch@gmail.com";
   const phone = "08034567890";
@@ -33,10 +31,10 @@ router.get("/user", async (req, res) => {
       is_dispatch_rider: false,
     })
       .then((resi) => {
-        res.status(200).json({ msg: resi.id });
+        res.json({ status: "success", msg: resi.id });
       })
       .catch((err) => {
-        res.status(400).json({ msg: err });
+        res.json({ status: "success", msg: err });
       });
   }
 });
@@ -67,10 +65,10 @@ router.get("/rider", async (req, res) => {
       is_dispatch_rider: true,
     })
       .then((resi) => {
-        res.status(200).json({ msg: resi.id });
+        res.json({ status: "success", msg: resi.id });
       })
       .catch((err) => {
-        res.status(400).json({ msg: err });
+        res.json({ status: "error", msg: err });
       });
   }
 });
@@ -90,8 +88,10 @@ router.post("/shop", (req, res) => {
 
   owner.shops.push(shop);
   owner.save(function (err, user) {
-    if (err) throw err;
-    res.status(200).json({ msg: user.shops[0] });
+    if (err) {
+      res.json({ status: "error", msg: err });
+    }
+    res.json({ status: "success", msg: user.shops[0] });
   });
 });
 
@@ -102,7 +102,8 @@ router.get("/", async (req, res) => {
   users = await User.find();
   const countries = ["Nigeria", "UK", "Kenya", "Ghana"];
   if (users.length != 0) {
-    res.status(200).json({ msg: users[0] });
+    let products = await Product.find();
+    res.json({ status: "success", msg: users[0], products: products });
   } else {
     try {
       for (let i = 0; i < 8; i++) {
@@ -143,9 +144,10 @@ router.get("/", async (req, res) => {
       }
 
       let products = await Product.find();
-      res.status(200).json({ msg: users[0], products: products });
+      res.json({ status: "success", msg: users[0], products: products });
     } catch (error) {
       console.log(error);
+      res.json({ status: "error", msg: error });
     }
   }
 });

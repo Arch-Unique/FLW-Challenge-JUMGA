@@ -44,9 +44,9 @@ router.get("/:userId&:currency", async (req, res) => {
 
     let result = await makePayment(userData);
     console.log("msg ---" + result);
-    res.status(result != null ? 200 : 400).json({ msg: result });
+    res.json({ status: "success", msg: result });
   } catch (error) {
-    res.status(400).json({ msg: error });
+    res.json({ status: "error", msg: error });
     console.log(error);
   }
 });

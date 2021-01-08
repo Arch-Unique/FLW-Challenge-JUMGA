@@ -7,16 +7,20 @@ const User = require("../models/user");
 //get all shops
 router.get("/shops", (req, res) => {
   Shop.find(function (err, shops) {
-    if (err) throw err;
-    res.status(200).json({ msg: shops });
+    if (err) {
+      res.json({ status: "error", msg: err });
+    }
+    res.json({ status: "success", msg: shops });
   });
 });
 
 //get all products
 router.get("/products", (req, res) => {
   Product.find(function (err, products) {
-    if (err) throw err;
-    res.status(200).json({ msg: products });
+    if (err) {
+      res.json({ status: "error", msg: err });
+    }
+    res.json({ status: "success", msg: products });
   });
 });
 

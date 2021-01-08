@@ -8,9 +8,13 @@ router.post("/", (req, res) => {
   const body = req.body;
   User.create(body)
     .then((result) => {
-      res.status(200).json({ msg: "User successfully created" });
+      res.json({
+        status: "success",
+        msg: "User successfully created",
+        data: result,
+      });
     })
-    .catch((err) => res.status(400).json({ msg: err }));
+    .catch((err) => res.json({ status: "error", msg: err }));
 });
 
 //get user
@@ -19,8 +23,8 @@ router.get("/:id", (req, res) => {
   console.log(id);
 
   User.findById(id)
-    .then((result) => res.status(200).json({ msg: result }))
-    .catch((err) => res.status(400).json({ msg: err }));
+    .then((result) => res.json({ status: "success", msg: result }))
+    .catch((err) => res.json({ status: "error", msg: err }));
 });
 
 //update user
@@ -28,9 +32,13 @@ router.patch("/:id", (req, res) => {
   const id = req.params.id;
   User.findByIdAndUpdate(id, req.body)
     .then((result) =>
-      res.status(200).json({ msg: "User successfully updated" })
+      res.json({
+        status: "success",
+        msg: "User successfully updated",
+        data: result,
+      })
     )
-    .catch((err) => res.status(400).json({ msg: err }));
+    .catch((err) => res.json({ status: "error", msg: err }));
 });
 
 //delete user
@@ -38,9 +46,9 @@ router.delete("/:id", (req, res) => {
   const id = req.params.id;
   User.findByIdAndDelete(id)
     .then((result) =>
-      res.status(200).json({ msg: "User successfully deleted" })
+      res.json({ status: "success", msg: "User successfully deleted" })
     )
-    .catch((err) => res.status(400).json({ msg: err }));
+    .catch((err) => res.json({ status: "error", msg: err }));
 });
 
 module.exports = router;

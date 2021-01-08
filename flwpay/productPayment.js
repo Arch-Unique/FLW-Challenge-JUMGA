@@ -52,15 +52,15 @@ router.post("/", async (res, req) => {
 
           makePayment(userData)
             .then((msg) => {
-              res.status(msg != null ? 200 : 400).json({ msg: msg });
+              res.json({ status: "success", msg: msg });
             })
             .catch((err) => {
-              res.status(400).json({ msg: err });
+              res.json({ status: "error", msg: err });
             });
         })
-        .catch((err) => res.status(400).json({ data: err }));
+        .catch((err) => res.json({ status: "error", msg: err }));
     })
-    .catch((err) => res.status(400).json({ data: err }));
+    .catch((err) => res.json({ status: "error", msg: err }));
 });
 
 module.exports = router;
