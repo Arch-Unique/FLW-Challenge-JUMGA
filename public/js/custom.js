@@ -148,25 +148,24 @@ $(function () {
     );
   });
 
+  $(document).on("click", ".spoduct", function (e) {
+    let src = e.currentTarget;
+    let product_id = src.querySelector("input").getAttribute("value");
+    window.location.href = "./product.html?id=" + product_id;
+  });
+
+  $(document).on("click", ".shopitem", function (e) {
+    let src = e.currentTarget;
+    let id = src.querySelector("input").getAttribute("value");
+    let img = src.querySelector("img").getAttribute("src");
+    img = img.substr(img.indexOf("/") + 1, img.indexOf("."));
+    window.location.href = "./allproducts.html?id=" + id + "&img=" + img;
+  });
+
   $(document).ready(function () {
-    $(".spoduct").click((e) => {
-      let src = e.currentTarget;
-      let product_id = src.querySelector("input").getAttribute("value");
-      window.location.href = "./product.html?id=" + product_id;
-    });
-
-    $(".shopitem").click((e) => {
-      console.log("shopitem");
-      let src = e.currentTarget;
-      let id = src.querySelector("input").getAttribute("value");
-      let img = src.querySelector("img").getAttribute("src");
-      img = img.substr(img.indexOf("/") + 1, img.indexOf("."));
-      window.location.href = "./allproducts.html?id=" + id + "&img=" + img;
-    });
-
     $("#addshop").click((e) => {
       let userId = sessionStorage.getItem("userId");
-      let currency = $("#countrySelect").val();
+      let currency = $("#countrySelectr").val();
       let url =
         "http://localhost:3000/api/flw/shopFeePayment/" +
         userId +
@@ -178,11 +177,11 @@ $(function () {
 
       $.get(url, function (data, status, xhr) {
         console.log(data);
-        if (xhr.status == 200) {
+        if (data.status == "success") {
           window.location.href = data.msg;
         } else {
           $(".loader_bg").hide();
-          alert("error");
+          alert("Error fetching URL");
         }
       });
     });
@@ -428,3 +427,8 @@ $(function () {
     interval: 5000,
   });
 });
+
+function getNumForCountry(country) {
+  const countries = ["Nigeria", "UK", "Kenya", "Ghana"];
+  return countries.indexOf(country);
+}

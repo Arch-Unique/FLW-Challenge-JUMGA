@@ -57,7 +57,7 @@
                                  <li> <a href="about.html">About</a> </li>
                                  <li><a href="shops.html">Shop</a></li>
                                  <li><a href="contact.html">Contact Us</a></li>
-                                 <li class="last"><a href="#" id="addshop"><div style="display: block;">
+                                 <li class="last"><a href="#" data-toggle="modal" data-target="#exampleModal"><div style="display: block;">
                                     <img src="images/add-shop.png" alt="icon"/>
                                     <h4 style="text-transform: capitalize;">Create Shop</h4>
                                  </div></a></li>
@@ -83,7 +83,6 @@
                            </div>
                            <div class="form-group">
                             <select style="font-size: small; color: #495057;" class="form-control form-control-lg" id="countrySelect" name="Country" aria-expanded="false">
-                                <option selected value="0">Choose Country</option>
                                 <option value="0">Nigeria</option>
                                 <option value="2">Kenya</option>
                                 <option value="3">Ghana</option>
@@ -104,7 +103,7 @@
                         <hr>
 
                         <div class="submit_btn">
-                            <button type="submit" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary" style="background: #081b30;">Update</button>
+                            <button type="submit" class="btn btn-primary" style="background: #081b30;">Update</button>
                          </div>
         
                      </div>
@@ -116,15 +115,6 @@
       </div>
       <!-- end header -->
       
-    </div>
-
-    <!-- payment feedback -->
-    <div id="myModal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-          <h3 id="tx_title" style="text-align: center; padding: 20px;"></h3>
-        </div>
-      </div>
     </div>
 
     <!-- shop details -->
@@ -141,12 +131,12 @@
             <form>
               <div class="form-group">
                 <label for="recipient-name" class="col-form-label">Title:</label>
-                <input type="text" class="form-control" id="recipient-name">
+                <input type="text" class="form-control" id="recipient-shop-title">
               </div>
               <div class="form-group">
                <label for="recipient-name" class="col-form-label">Country:</label>
-               <select style="font-size: small; color: #495057;" class="form-control form-control-lg" id="countrySelect" name="Country" aria-expanded="false">
-                  <option selected value="0">Nigeria</option>
+               <select style="font-size: small; color: #495057;" class="form-control form-control-lg" id="countrySelectr" name="Country" aria-expanded="false">
+                  <option value="0">Nigeria</option>
                   <option value="2">Kenya</option>
                   <option value="3">Ghana</option>
                   <option value="1">UK</option>
@@ -160,7 +150,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal" style="background-color: red;">Cancel</button>
-            <button type="button" class="btn btn-primary" >Pay Approval Fee</button>
+            <button id="addshop" type="button" class="btn btn-primary" >Pay Approval Fee</button>
           </div>
         </div>
       </div>
@@ -287,23 +277,21 @@
          $(document).ready(function(){
             let id = sessionStorage.getItem("userId");
             $.get("http://localhost:3000/api/users/"+id,function (data,status,xhr){
-               if(xhr.status == 200){
+               if(data.status == "success"){
                   let user = data.msg;
                   $("input[name='Name']").val(user.name);
                   $("input[name='Email']").val(user.email);
                   $("input[name='Phone']").val(user.phone);
-                  $("#countrySelect").val(1);
+                  let numCountry = getNumForCountry(user.country);
+                  $("#countrySelect").val(numCountry);
+                  $("#countrySelectr").val(numCountry);
                }else{
+                 alert(data.msg);
                   console.log("error")
                }
             })
             
-         const params = new URLSearchParams(window.location.search);
-         if(params.has('msg')){
-            $("#tx_title").html("Transaction " + params.get('msg'));
-            $("#myModal").fadeToggle(1000);
-            $("#myModal").hide(1000);
-         }
+      
       });
          
       </script> 

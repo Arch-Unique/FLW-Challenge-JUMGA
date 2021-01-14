@@ -29,9 +29,9 @@ const userSchema = new Schema(
     // },
     country: String,
     bank_details: {
-      acc_no: String,
+      acct_no: String,
       bank_name: String,
-      branch_code: Number,
+      branch_code: String,
       swift_code: String,
       routing_no: String,
     },

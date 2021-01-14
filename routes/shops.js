@@ -17,7 +17,7 @@ router.post("/user/:id", (req, res) => {
     body.owner = id;
     let myshop = new Shop(body);
 
-    user.shops.push(myshop);
+    user.shops.push(myshop.id);
     user
       .save()
       .then((result) => {
@@ -43,6 +43,8 @@ router.get("/user/:id", (req, res) => {
 router.get("/:id", (req, res) => {
   const id = req.params.id;
   Shop.findById(id)
+    .populate("products")
+    .exec()
     .then((shop) => res.json({ status: "success", msg: shop }))
     .catch((err) => res.json({ status: "error", msg: err }));
 });

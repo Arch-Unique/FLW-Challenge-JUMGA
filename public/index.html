@@ -28,7 +28,14 @@
    <body class="main-layout" >
       <!-- loader  -->
       <div class="loader_bg">
-         <div class="loader">
+         <div id="setcountry_bg" style="display: none;">
+            <h3>Choose Country For Simulation</h3>
+            <button class="setcont" value="0">Nigeria</button>
+            <button class="setcont"  value="1">UK</button>
+            <button class="setcont"  value="2">Kenya</button>
+            <button class="setcont"  value="3">Ghana</button>
+         </div>
+         <div class="loader" style="display: none;">
             <img src="images/loading.gif" alt="#" />
             <h4 id="progText" style="display: block;">Creating Demo Account ...</h3>
          </div>
@@ -84,17 +91,34 @@
       <script src="js/jquery-3.0.0.min.js"></script>
       <script src="js/plugin.js"></script>
       <!-- sidebar -->
+
       <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-      <script src="js/custom.js"></script>
       <script>
-             $(document).ready(function(){
-                if(sessionStorage.getItem("userId") == null){
-                  $.ajax({
+         function getCID() {
+            let cid = false;
+            let mcid = 0;
+            $.ajax({
                   type:'GET',
                   async: false,
-                  url: 'http://localhost:3000/api/demo/',
+                  url: 'http://localhost:3000/api/demo/check',
                   success: function(data,status, jqXHR) {
-                     if(jqXHR.status == 200){
+                     if(data.status == "success"){
+                        mcid = data.msg;
+                        cid = data.msg == 1;
+                     }
+                  }
+               });
+            console.log(cid);
+            return cid;
+         }
+
+         function getUser(cid){
+            $.ajax({
+                  type:'GET',
+                  url: 'http://localhost:3000/api/demo/demo/'+ cid,
+                  success: function(data,status, jqXHR) {
+                     if(data.status == "success"){
+                        console.log(data);
                         sessionStorage.setItem("userId",data.msg._id);
                         sessionStorage.setItem("userName",data.msg.name);
                         sessionStorage.setItem("userCountry",data.msg.country);
@@ -102,39 +126,69 @@
                         $("#prof").html(`Hi ${sessionStorage.getItem("userName")}`);
 
                         let products = data.products;
-                  for (let i = 0; i < 8; i++) {
-                     let product_name = products[i].name;
-                     let product_price = products[i].price;
-                     let product_image = products[i].images;
-                     let product_id = products[i].id;
-                     $("#allproducts").append("<div class='col-xl-3 col-lg-3 col-md-6 col-sm-6 spoduct'><figure><img src='"+ product_image +"' alt='img'/></figure><h3><strong class='price_text'>$"+ product_price +"</strong></h3><h4>"+ product_name +"</h4><input hidden value='" + product_id +"'/></div>");
-                  }
+                        for (let i = 0; i < 8; i++) {
+                           let product_name = products[i].name;
+                           let product_price = products[i].price;
+                           let product_image = products[i].images;
+                           let product_id = products[i]._id;
+                           $("#allproducts").append("<div class='col-xl-3 col-lg-3 col-md-6 col-sm-6 spoduct'><figure><img src='"+ product_image +"' alt='img'/></figure><h3><strong class='price_text'>$"+ product_price +"</strong></h3><h4>"+ product_name +"</h4><input hidden value='" + product_id +"'/></div>");
+                        }
 
                         setTimeout(function () {
                            $(".loader_bg").fadeToggle();
                            $("#progText").html("Finishing Up ...")
                         }, 1000);
                      }else{
-                        $("#progText").html(data);
+                        $("#progText").html(data.msg);
                      }
                      console.log(data); 
-                  }, error: function(jqXHR, textStatus, errorThrown) {
+                  }, 
+                  error: function(jqXHR, textStatus, errorThrown) {
                          console.log(errorThrown); 
                   }});
+         }
+
+         $(document).on("click", ".setcont", function (e) {
+                   const src = e.currentTarget;
+                   let cid = src.getAttribute("value");
+                   $("#progText").html("Creating Demo Account...")
+                   $(".loader").fadeIn();
+                   $("#setcountry_bg").hide();
+                   getUser(cid);
+                });
+
+
+             $(document).ready(function(){
+                if(sessionStorage.getItem("userId") == null){
+                   if(getCID()){
+                     $("#progText").html("Getting Demo Account...")
+                     $(".loader").fadeIn();
+                      getUser(5);
+                   }else{
+                     $("#setcountry_bg").show();
+                   }
                }else{
+                  $("#progText").html("Getting Demo Account...")
+                   $(".loader").fadeIn();
                   $.get("http://localhost:3000/api/all/products",function(data,status,xhr){
-                     let products = data.msg;
-                  for (let i = 0; i < 8; i++) {
-                     let product_name = products[i].name;
-                     let product_price = products[i].price;
-                     let product_image = products[i].images;
-                     let product_id = products[i].id;
-                     $("#allproducts").append("<div class='col-xl-3 col-lg-3 col-md-6 col-sm-6 spoduct'><figure><img src='"+ product_image +"' alt='img'/></figure><h3><strong class='price_text'>$"+ product_price +"</strong></h3><h4>"+ product_name +"</h4><input hidden value='" + product_id +"'/></div>");
-                  }
+                     if(data.status == "success"){
+                        let products = data.msg;
+                        for (let i = 0; i < 8; i++) {
+                           let product_name = products[i].name;
+                           let product_price = products[i].price;
+                           let product_image = products[i].images;
+                           let product_id = products[i]._id;
+                           $("#allproducts").append("<div class='col-xl-3 col-lg-3 col-md-6 col-sm-6 spoduct'><figure><img src='"+ product_image +"' alt='img'/></figure><h3><strong class='price_text'>$"+ product_price +"</strong></h3><h4>"+ product_name +"</h4><input hidden value='" + product_id +"'/></div>");
+                        }
+                     }else{
+                        alert(data.msg);
+                     }
                   });
                   console.log(sessionStorage.getItem("userId"));
                   $(".loader_bg").hide();
                }});
       </script>
+      <script src="js/custom.js"></script>
+     
    </body>
 </html>

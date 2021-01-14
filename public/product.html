@@ -104,7 +104,6 @@
       <script src="js/plugin.js"></script>
       <!-- sidebar -->
       <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-      <script src="js/custom.js"></script>
       <script>
          $(document).ready(function(){
          $(".fancybox").fancybox({
@@ -120,28 +119,37 @@
          $(this).removeClass('transition');
          });
 
+         
          const params = new URLSearchParams(window.location.search);
-         if(params.has('id')){
-            let prodid = params.get('id');
+         let prodid = params.has('id') ? params.get('id') : "";
+         
             $.get("http://localhost:3000/api/products/"+prodid,function(data,status,xhr){
-               if(xhr.status == 200){
+               if(data.status == "success"){
                   $("#productTitle").html(data.msg.name);
             $("#productPrice").html(data.msg.price);
             $("#productImage").attr("src",data.msg.images);
+               }else{
+                  alert(data.msg);
                }
             });
-         }
+         
 
          $("#payBtn").click((e) => {
             $(".loader_bg").show();
+            const userId = sessionStorage.getItem('userId');
+            const cur = getNumForCountry(sessionStorage.getItem('userCountry'));
+            
             $.post("http://localhost:3000/api/flw/productPayment/", {
-
+               userId: userId,
+               productId: prodid,
+               currency: cur,
             }, function(data,status,xhr){
-               if(xhr.status == 200){
+               if(data.status == "success"){
                   window.location.href = data.msg;
                }else{
                   $(".loader_bg").hide();
-                  alert(data.msg);
+                  console.log(data.msg);
+                  alert(data.status);
                }
             })
          });
@@ -149,5 +157,6 @@
          });
          
       </script> 
+      <script src="js/custom.js"></script>
    </body>
 </html>

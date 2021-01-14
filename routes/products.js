@@ -14,7 +14,7 @@ router.post("/shop/:id", (req, res) => {
       throw err;
     }
     let myproduct = new Product(body);
-    shop.products.push(myproduct);
+    shop.products.push(myproduct.id);
     shop
       .save()
       .then((result) => {

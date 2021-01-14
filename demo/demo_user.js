@@ -25,7 +25,7 @@ router.get("/user", async (req, res) => {
       phone: phone,
       country: country,
       bank_details: {
-        acc_no: acct_no,
+        acct_no: acct_no,
         bank_name: bank_name,
       },
       is_dispatch_rider: false,
@@ -59,7 +59,7 @@ router.get("/rider", async (req, res) => {
       phone: phone,
       country: country,
       bank_details: {
-        acc_no: acct_no,
+        acct_no: acct_no,
         bank_name: bank_name,
       },
       is_dispatch_rider: true,
@@ -75,45 +75,56 @@ router.get("/rider", async (req, res) => {
 
 //sample shop
 router.post("/shop", (req, res) => {
-  let owner, drider;
-
   User.find(function (err, doc) {
     if (err) throw err;
-    owner = doc[0];
-    drider = doc[1];
-  });
+    let owner = doc[0];
+    let drider = doc[4];
 
-  req.body["dispatch_rider"] = drider.id;
-  const shop = new Shop(req.body);
+    console.log(drider);
+    console.log(owner);
 
-  owner.shops.push(shop);
-  owner.save(function (err, user) {
-    if (err) {
-      res.json({ status: "error", msg: err });
-    }
-    res.json({ status: "success", msg: user.shops[0] });
+    req.body["dispatch_rider"] = drider.id;
+    const shop = new Shop(req.body);
+
+    owner.shops.push(shop);
+    owner.save(function (err, user) {
+      if (err) {
+        res.json({ status: "error", msg: err });
+      }
+      res.json({ status: "success", msg: user.shops[0] });
+    });
   });
 });
 
-//demo
-router.get("/", async (req, res) => {
-  let users;
+router.get("/check", async (req, res) => {
+  try {
+    let users = await User.find();
+    res.json({ status: "success", msg: users.length == 0 ? 0 : 1 });
+  } catch (error) {}
+});
 
-  users = await User.find();
+//demo
+router.get("/demo/:country", async (req, res) => {
   const countries = ["Nigeria", "UK", "Kenya", "Ghana"];
+  const cid = req.params.country;
+
+  let users = await User.find();
   if (users.length != 0) {
     let products = await Product.find();
     res.json({ status: "success", msg: users[0], products: products });
   } else {
+    [countries[0], countries[cid]] = [countries[cid], countries[0]];
     try {
       for (let i = 0; i < 8; i++) {
-        await User.create({
+        let defOpt = {
           name: faker.name.firstName(i % 2),
           email: faker.internet.email(i % 2),
           phone: faker.phone.phoneNumber(),
           country: countries[i % 4],
           is_dispatch_rider: i > 3,
-        });
+        };
+        let demoUser = getDemoUser(defOpt);
+        await User.create(demoUser);
       }
 
       let users = await User.find();
@@ -137,10 +148,11 @@ router.get("/", async (req, res) => {
             price: (k + 1) * 10 * (faker.random.number(5) + 1),
             quantity: faker.random.number(500),
           });
-          shop.products.push(product);
+          shop.products.push(product._id);
         }
-        user.shops.push(shop);
-        await user.save;
+        await shop.save();
+        user.shops.push(shop._id);
+        await user.save();
       }
 
       let products = await Product.find();
@@ -151,5 +163,66 @@ router.get("/", async (req, res) => {
     }
   }
 });
+
+function demoNGN(user) {
+  user["bank_details"] = {
+    acct_no: "0690000032",
+    bank_name: "044",
+  };
+  return user;
+}
+
+function demoKES(user) {
+  user["momo"] = {
+    name: "MPS",
+    phone: "2540782773934",
+  };
+  return user;
+}
+
+function demoGHS(user) {
+  user["bank_details"] = {
+    acct_no: "0031625807099",
+    bank_name: "GH280100",
+    branch_code: "GH280103",
+  };
+  user["momo"] = {
+    name: "MTN",
+    phone: "233542773934",
+  };
+  return user;
+}
+
+function demoGBP(user) {
+  user["bank_details"] = {
+    acct_no: "DA091983888373BGH",
+    bank_name: "LLOYDS BANK",
+    swift_code: "BECFDE7HKKX",
+    routing_no: "BECFDE7HKKX",
+  };
+  user["address"] = {
+    postal_code: "80489",
+    street_name: "London Street",
+    street_no: "21",
+    city: "London",
+  };
+  return user;
+}
+
+function getDemoUser(user) {
+  switch (user.country) {
+    case "Nigeria":
+      return demoNGN(user);
+    case "Ghana":
+      return demoGHS(user);
+    case "Kenya":
+      return demoKES(user);
+    case "UK":
+      return demoGBP(user);
+
+    default:
+      break;
+  }
+}
 
 module.exports = router;

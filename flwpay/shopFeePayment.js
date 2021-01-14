@@ -2,8 +2,7 @@ const express = require("express");
 const shopFee = require("../config/constants").approvalFee;
 const User = require("../models/user");
 const router = express.Router();
-const convs = require("./convertCur");
-const makePayment = require("./initFlw").makePayment;
+const {makePayment, getFxRate, getRealCur} = require("./initFlw");
 const demoShopTitle = "Arch Shop";
 const demoShopDesc = "A very good shop where we sell food items and provisions";
 
@@ -16,11 +15,11 @@ router.get("/:userId&:currency", async (req, res) => {
     const name = user.name;
     const email = user.email;
     const phone = user.phone;
-    const amt = await convs.convCur(shopFee, cur);
-    const currency = convs.getRealCur(cur);
+    const amt = await getFxRate(shopFee, cur);
+    const currency = getRealCur(cur);
 
     let userData = {
-      tx_ref: "JUMGAShopFee" + name + Date.now(),
+      tx_ref: "shop" + name + Date.now(),
       amount: amt,
       currency: currency,
       redirect_url:
@@ -38,13 +37,13 @@ router.get("/:userId&:currency", async (req, res) => {
       },
       customizations: {
         title: "Shop Approval Fee",
-        logo: "http://localhost:" + process.env.PORT + "/images/logo.png",
+        logo: "http://localhost:" + process.env.PORT + "/images/jlogo.png",
       },
     };
 
     let result = await makePayment(userData);
     console.log("msg ---" + result);
-    res.json({ status: "success", msg: result });
+    res.json({ status: result != null ? "success" : "error", msg: result });
   } catch (error) {
     res.json({ status: "error", msg: error });
     console.log(error);

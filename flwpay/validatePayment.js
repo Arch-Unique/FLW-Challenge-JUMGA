@@ -4,12 +4,16 @@ const axios = require("axios").default;
 const flw = require("./initFlw").flw;
 const distSales = require("./distSales");
 const demoShopURL = "http://localhost:" + process.env.PORT + "/api/demo/shop";
+const trxURL = "http://localhost:" + process.env.PORT + "/transaction.html";
 
 router.get("/", async (req, res) => {
   const txRef = req.query.tx_ref;
   const txId = req.query.transaction_id;
   const txStatus = req.query.status;
   const payload = { id: txId };
+
+  let finalRedUrlSuc = trxURL + "?msg=success";
+  let finalRedUrlErr = trxURL + "?msg=failed";
 
   if (txStatus == "successful") {
     const response = await flw.Transaction.verify(payload);
@@ -24,49 +28,31 @@ router.get("/", async (req, res) => {
           })
           .then((result) => {
             if (result.status == 200) {
-              res.redirect(
-                "http://localhost:" +
-                  process.env.PORT +
-                  "/profile.html?msg=Success"
-              );
+              res.redirect(finalRedUrlSuc);
             }
           })
           .catch((err) => {
-            res.redirect(
-              "http://localhost:" +
-                process.env.PORT +
-                "/profile.html?msg=Failed"
-            );
+            res.redirect(finalRedUrlErr);
           });
       } else {
         //do something here for the payment
-        distSales(data.amount, data.meta.delfee, data.meta.shopid).then(
-          (result) => {
+        distSales(data.amount, data.meta.delfee, data.meta.shopid)
+          .then((result) => {
             if (result == "success") {
-              res.redirect(
-                "http://localhost:" +
-                  process.env.PORT +
-                  "/product.html?msg=Success"
-              );
+              res.redirect(finalRedUrlSuc);
             } else {
-              res.redirect(
-                "http://localhost:" +
-                  process.env.PORT +
-                  "/product.html?msg=Failed"
-              );
+              res.redirect(finalRedUrlErr);
             }
-          }
-        );
+          })
+          .catch((err) => {
+            res.redirect(finalRedUrlErr);
+          });
       }
     } else {
-      res.redirect(
-        "http://localhost:" + process.env.PORT + "/profile.html?msg=Failed"
-      );
+      res.redirect(finalRedUrlErr);
     }
   } else {
-    res.redirect(
-      "http://localhost:" + process.env.PORT + "/profile.html?msg=Failed"
-    );
+    res.redirect(finalRedUrlErr);
   }
 });
 

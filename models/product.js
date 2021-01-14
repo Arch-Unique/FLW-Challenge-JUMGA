@@ -26,6 +26,16 @@ const productSchema = new Schema(
   }
 );
 
+productSchema.virtual("shopOwner", {
+  ref: "Shop", //The Model to use
+  localField: "_id", //Find in Model, where localField
+  foreignField: "products", // is equal to foreignField
+});
+
+// Set Object and Json property to true. Default is set to false
+productSchema.set("toObject", { virtuals: true });
+productSchema.set("toJSON", { virtuals: true });
+
 const Product = mongoose.model("Product", productSchema);
 
 module.exports = Product;

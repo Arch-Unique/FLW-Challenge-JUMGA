@@ -71,28 +71,8 @@
                      <h3><strong id="shopName" class="price_text"></strong></h3>
                   </div>
                </div>
-               <div class="row" style="margin-top: 15px;" id="shopProducts">
-                  <div class="col-xl-4 col-lg-3 col-md-6 col-sm-6 spoduct">
-                     
-                        <figure><img src="images/basketball.png" alt="img"/></figure>
-                      <h3><strong class="price_text">$50</strong></h3>
-                        <h4>basket ball</h4>
-                     
-                  </div>
-                  <div class="col-xl-4 col-lg-3 col-md-6 col-sm-6 spoduct">
-                     
-                        <figure><img src="images/t-shirt.png" alt="img"/></figure>
-                       <h3><strong class="price_text">$50</strong></h3>
-                        <h4>T-Shirt</h4>
-                     
-                  </div>
-                  <div class="col-xl-4 col-lg-3 col-md-6 col-sm-6 spoduct">
-                     
-                        <figure><img src="images/game.png" alt="img"/></figure>
-                       <h3><strong class="price_text">$50</strong></h3>
-                        <h4>Game</h4>
-                     
-                  </div>
+               <div class="row" id="shopProducts" style="margin-top: 15px;" >
+                  
                </div>
             </div>
          </div>
@@ -109,7 +89,6 @@
       <script src="js/plugin.js"></script>
       <!-- sidebar -->
       <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-      <script src="js/custom.js"></script>
       <script>
          $(document).ready(function(){
 
@@ -117,30 +96,26 @@
          if(params.has('id')){
             let id = params.get('id')
             $.get("http://localhost:3000/api/shops/"+id,function(data,status,xhr){
-               if(xhr.status == 200){
+               if(data.status == "success"){
                   $("#shopName").html(data.msg.name + "Shop");
                   $("#shopImage").attr("src", "images/" + params.get('img'));
-               }
-            });
 
-            $.get("http://localhost:3000/api/products/shop/"+id,function(data,status,xhr){
-               if(xhr.status == 200){
-                  for (let i = 0; i < data.msg.length; i++) {
-                     const product = data.msg[i];
+                  console.log(data);
+                  for (let i = 0; i < data.msg.products.length; i++) {
+                     const product = data.msg.products[i];
                      let product_name = product.name;
                      let product_price = product.price;
                      let product_image = product.images;
-                     let product_id = product.id;
-                     $("#shopProducts").append("<div class='col-xl-3 col-lg-3 col-md-6 col-sm-6 spoduct'><figure><img src='"+ product_image +"' alt='img'/></figure><h3><strong class='price_text'>$"+ product_price +"</strong></h3><h4>"+ product_name +"</h4><input hidden value='" + product_id +"'/></div>");  
+                     let product_id = product._id;
+                     $("#shopProducts").append("<div class='col-xl-4 col-lg-4 col-md-6 col-sm-6 spoduct'><figure><img src='"+ product_image +"' alt='img'/></figure><h3><strong class='price_text'>$"+ product_price +"</strong></h3><h4>"+ product_name +"</h4><input hidden value='" + product_id +"'/></div>");  
                   }
                }
             });
-
-
          }
 
          });
          
       </script> 
+      <script src="js/custom.js"></script>
    </body>
 </html>
