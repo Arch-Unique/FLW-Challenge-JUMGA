@@ -110,7 +110,6 @@ $(function () {
       $("#progText").html("Loading ...");
 
       $.get(url, function (data, status, xhr) {
-        console.log(data);
         if (data.status == "success") {
           window.location.href = data.msg;
         } else {

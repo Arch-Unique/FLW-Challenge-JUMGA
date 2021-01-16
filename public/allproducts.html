@@ -101,7 +101,6 @@
                   $("#shopName").html(data.msg.name + "Shop");
                   $("#shopImage").attr("src", "images/" + params.get('img'));
 
-                  console.log(data);
                   for (let i = 0; i < data.msg.products.length; i++) {
                      const product = data.msg.products[i];
                      let product_name = product.name;

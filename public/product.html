@@ -132,8 +132,6 @@
                   alert(data.msg);
                }
             });
-         
-            
 
          $("#payBtn").click((e) => {
             $(".loader_bg").show();
@@ -147,10 +145,9 @@
             }, function(data,status,xhr){
                if(data.status == "success"){
                   window.location.href = data.msg;
-               }else{
+               }else {
                   $(".loader_bg").hide();
-                  console.log(data.msg);
-                  alert(data.status);
+                  alert("Error fetching URL");
                }
             })
          });

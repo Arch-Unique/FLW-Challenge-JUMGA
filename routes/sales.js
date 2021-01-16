@@ -5,7 +5,6 @@ const Sale = require("../models/sale");
 //create a sale entry
 router.post("/", (req, res) => {
   const meta = req.body;
-  console.log(meta);
 
   if (meta.status == "success") {
     Sale.create({

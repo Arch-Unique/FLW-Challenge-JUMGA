@@ -62,4 +62,6 @@ This is a simple demo site showing the usage of the flutterwave payment integrat
 
 ---
 
+To restart the database for you to be able to choose another country for simulation. Go to the about page [localhost:3000/about.html](http://localhost:3000/about.html) and click on the **restart** button.
+
 All the links on this readme will only work when you've successfully followed the procedures.

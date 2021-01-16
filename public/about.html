@@ -99,10 +99,10 @@
       <script src="js/plugin.js"></script>
       <!-- sidebar -->
       <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-      <script src="js/custom.js"></script>
+      
       <script>
          $("#dropbtn").on("click", function(e){
-            $.get(location.host + "/api/all/drop", function(data,status,xhr){
+            $.get("http://" + location.host + "/api/all/drop", function(data,status,xhr){
                if(data.status == "success"){
                   sessionStorage.clear();
                   window.location.href = "./index.html"
@@ -110,5 +110,6 @@
             })
          });
       </script>
+      <script src="js/custom.js"></script>
 </body>
 </html>

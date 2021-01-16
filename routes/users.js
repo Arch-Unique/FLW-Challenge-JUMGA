@@ -20,7 +20,6 @@ router.post("/", (req, res) => {
 //get user
 router.get("/:id", (req, res) => {
   const id = req.params.id;
-  console.log(id);
 
   User.findById(id)
     .populate({

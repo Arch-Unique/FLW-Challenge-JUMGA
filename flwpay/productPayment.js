@@ -48,16 +48,10 @@ router.post("/", async (req, res) => {
       },
     };
 
-    console.log(userData.amount);
-
-    makePayment(userData)
-      .then((msg) => {
-        res.json({ status: "success", msg: msg });
-      })
-      .catch((err) => {
-        res.json({ status: "error", msg: err });
-      });
+    let result = await makePayment(userData);
+    res.json({ status: result != null ? "success" : "error", msg: result });
   } catch (error) {
+    console.log(error);
     res.json({ status: "error", msg: error });
   }
 });

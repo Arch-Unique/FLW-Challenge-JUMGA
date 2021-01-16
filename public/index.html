@@ -95,7 +95,7 @@
 
       <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
       <script>
-         function getCID() {
+         function getCID() { //check if user exist
             let cid = false;
             let mcid = 0;
             $.ajax({
@@ -109,7 +109,6 @@
                      }
                   }
                });
-            console.log(cid);
             return cid;
          }
 
@@ -119,7 +118,6 @@
                   url: 'http://localhost:3000/api/demo/demo/'+ cid,
                   success: function(data,status, jqXHR) {
                      if(data.status == "success"){
-                        console.log(data);
                         sessionStorage.setItem("userId",data.msg._id);
                         sessionStorage.setItem("userName",data.msg.name);
                         sessionStorage.setItem("userCountry",data.msg.country);
@@ -142,7 +140,6 @@
                      }else{
                         $("#progText").html(data.msg);
                      }
-                     console.log(data); 
                   }, 
                   error: function(jqXHR, textStatus, errorThrown) {
                          console.log(errorThrown); 
@@ -185,7 +182,6 @@
                         alert(data.msg);
                      }
                   });
-                  console.log(sessionStorage.getItem("userId"));
                   $(".loader_bg").hide();
                }});
       </script>
