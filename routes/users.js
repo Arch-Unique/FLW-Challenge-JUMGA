@@ -23,6 +23,13 @@ router.get("/:id", (req, res) => {
   console.log(id);
 
   User.findById(id)
+    .populate({
+      path: "shops",
+      populate: {
+        path: "dispatch_rider",
+      },
+    })
+    .exec()
     .then((result) => res.json({ status: "success", msg: result }))
     .catch((err) => res.json({ status: "error", msg: err }));
 });

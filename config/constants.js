@@ -9,9 +9,9 @@ const getUrl = (req) => {
   });
 };
 
-const productPercent = 2.5;
-const deliveryPercent = 20;
-const approvalFee = 20;
+const productPercent = 2.5; //Percentage JUMGA takes for every sale
+const deliveryPercent = 20; //Percentage JUMGA takes for every delivery
+const approvalFee = 20; //Approval fee in dollars
 
 module.exports = {
   dbUrl,

@@ -167,7 +167,9 @@ $(function () {
       let userId = sessionStorage.getItem("userId");
       let currency = $("#countrySelectr").val();
       let url =
-        "http://localhost:3000/api/flw/shopFeePayment/" +
+        "http://" +
+        location.host +
+        "/api/flw/shopFeePayment/" +
         userId +
         "&" +
         currency;

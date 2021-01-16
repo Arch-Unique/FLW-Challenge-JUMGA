@@ -69,7 +69,7 @@
                            <h1 class="sporrt_text">About Me</h1>
                            <p  class="lorem_text">My name is Ikenna Idigo . I am a Junior Software Developer. I have ground knowledge of several programming Languages which include and not limited to Java, Flutter, Dart, HTML, CSS, JS, PHP, Ruby, Golang, Solidity. I aim at developing myself to become better in these languages. I am not a master of all as I tend to use whatever suits me for my daily needs. As for the Flutterwave Challenge , I am using Node JS for backend coupled with a mini site built with vanilla JS with bootstrap.</p>
                            <div class="btn_main">
-                              <a class="btn btn-lg btn-primary" href="#" role="button">Thanks</a>
+                              <a class="btn btn-lg btn-primary" id="dropbtn" role="button">RESTART</a>
                            </div>
                         </div>
                      </div>
@@ -100,5 +100,15 @@
       <!-- sidebar -->
       <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
       <script src="js/custom.js"></script>
+      <script>
+         $("#dropbtn").on("click", function(e){
+            $.get(location.host + "/api/all/drop", function(data,status,xhr){
+               if(data.status == "success"){
+                  sessionStorage.clear();
+                  window.location.href = "./index.html"
+               }
+            })
+         });
+      </script>
 </body>
 </html>

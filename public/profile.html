@@ -102,9 +102,19 @@
                         <a data-toggle="modal" data-target="#momoModal"><h3>MOMO</h3></a>
                         <hr>
 
-                        <div class="submit_btn">
-                            <button type="submit" class="btn btn-primary" style="background: #081b30;">Update</button>
-                         </div>
+                        <table class="table table-striped" style="margin-top: 10px;">
+                          <thead>
+                            <h3 style="text-align: center;">My Shops</h3>
+                            <tr>
+                              <th scope="col">Date</th>
+                              <th scope="col">Shop Name</th>
+                              <th scope="col">Dispatch Rider</th>
+                            </tr>
+                          </thead>
+                          <tbody id="tbd_shops">
+                            
+                          </tbody>
+                        </table>
         
                      </div>
                 </div>
@@ -276,7 +286,7 @@
       <script>
          $(document).ready(function(){
             let id = sessionStorage.getItem("userId");
-            $.get("http://localhost:3000/api/users/"+id,function (data,status,xhr){
+            $.get("http://" + location.host + "/api/users/"+id,function (data,status,xhr){
                if(data.status == "success"){
                   let user = data.msg;
                   $("input[name='Name']").val(user.name);
@@ -285,6 +295,13 @@
                   let numCountry = getNumForCountry(user.country);
                   $("#countrySelect").val(numCountry);
                   $("#countrySelectr").val(numCountry);
+                  let shops = user.shops;
+
+                  for (let i = 0; i < shops.length; i++) {
+                    let shop = shops[i];
+                    let date = new Date(shop.createdAt);
+                     $("#tbd_shops").append("<tr><th scope='row'>"+ date.toDateString() +"</th><td>"+ shop.name +"</td><td>"+ shop.dispatch_rider.name +"</td></tr>");
+                  }
                }else{
                  alert(data.msg);
                   console.log("error")

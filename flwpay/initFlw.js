@@ -3,16 +3,20 @@ const Flutterwave = require("flutterwave-node-v3");
 const flw = new Flutterwave(process.env.FLWPUBLICKEY, process.env.FLWSECRETKEY);
 const currs = ["NGN", "GBP", "KES", "GHS"];
 const countries = ["Nigeria", "UK", "Kenya", "Ghana"];
+const hostname = "http://localhost"; //replace with your's
 
+//get real currency from integer
 const getRealCur = (curr) => {
   return currs[curr];
 };
 
+//get real currency from string country
 const getCurFromCountry = (country) => {
   let index = countries.indexOf(country);
   return currs[index];
 };
 
+//make any payment using this
 const makePayment = async (payload) => {
   const opt = {
     method: "post",
@@ -26,7 +30,6 @@ const makePayment = async (payload) => {
 
   try {
     const res = await axios(opt);
-    console.log("res---" + res.data);
     return res.data.status == "success" ? res.data.data.link : null;
   } catch (err) {
     console.log("flwerr---" + err);
@@ -34,6 +37,7 @@ const makePayment = async (payload) => {
   }
 };
 
+//get FX rate and convert the amount accordingly
 const getFxRate = async (amt, cur) => {
   const opt = {
     method: "get",
@@ -56,4 +60,11 @@ const getFxRate = async (amt, cur) => {
   } catch (error) {}
 };
 
-module.exports = { flw, makePayment, getFxRate, getRealCur, getCurFromCountry };
+module.exports = {
+  flw,
+  makePayment,
+  getFxRate,
+  getRealCur,
+  getCurFromCountry,
+  hostname,
+};

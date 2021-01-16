@@ -123,7 +123,7 @@
          const params = new URLSearchParams(window.location.search);
          let prodid = params.has('id') ? params.get('id') : "";
          
-            $.get("http://localhost:3000/api/products/"+prodid,function(data,status,xhr){
+            $.get("http://" + location.host + "/api/products/"+prodid,function(data,status,xhr){
                if(data.status == "success"){
                   $("#productTitle").html(data.msg.name);
             $("#productPrice").html(data.msg.price);
@@ -133,13 +133,14 @@
                }
             });
          
+            
 
          $("#payBtn").click((e) => {
             $(".loader_bg").show();
             const userId = sessionStorage.getItem('userId');
             const cur = getNumForCountry(sessionStorage.getItem('userCountry'));
             
-            $.post("http://localhost:3000/api/flw/productPayment/", {
+            $.post("http://" + location.host + "/api/flw/productPayment/", {
                userId: userId,
                productId: prodid,
                currency: cur,

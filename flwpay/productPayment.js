@@ -2,7 +2,7 @@ const express = require("express");
 const Product = require("../models/product");
 const User = require("../models/user");
 const router = express.Router();
-const { makePayment, getFxRate, getRealCur } = require("./initFlw");
+const { makePayment, getFxRate, getRealCur, hostname } = require("./initFlw");
 
 router.post("/", async (req, res) => {
   const cur = req.body.currency; //integer
@@ -23,14 +23,14 @@ router.post("/", async (req, res) => {
     const productPrice = product.price;
     const shopId = product.shopOwner[0]._id;
     let amt = await getFxRate(productPrice, cur);
+    // dfee - delivery fee constant $10
     let dfee = await getFxRate(10, cur);
 
     let userData = {
       tx_ref: `product-${name}-${productId}-${Date.now()}`,
       amount: amt,
       currency: getRealCur(cur),
-      redirect_url:
-        "http://localhost:" + process.env.PORT + "/api/flw/validatePayment",
+      redirect_url: hostname + process.env.PORT + "/api/flw/validatePayment",
       //payment_options: "card",
       meta: {
         payment_type: "product",
@@ -44,7 +44,7 @@ router.post("/", async (req, res) => {
       },
       customizations: {
         title: productName,
-        logo: "http://localhost:" + process.env.PORT + "/images/jlogo.png",
+        logo: hostname + process.env.PORT + "/images/jlogo.png",
       },
     };
 

@@ -1,3 +1,7 @@
+/*
+This is for distribution of profits to the different parties
+*/
+
 const { productPercent, deliveryPercent } = require("../config/constants");
 const { getCurFromCountry, flw } = require("./initFlw");
 const Shop = require("../models/shop");
@@ -7,8 +11,6 @@ const distSales = async (amt, delFee, shopId) => {
   const sellerGains = ((100 - productPercent) * amt) / 100;
   const riderGains = ((100 - deliveryPercent) * delFee) / 100;
   let msg = "Failure";
-
-  console.log(sellerGains, riderGains);
 
   try {
     let shop = await Shop.findById(shopId)
@@ -22,22 +24,21 @@ const distSales = async (amt, delFee, shopId) => {
     const data = {
       title: "Sales Payment",
       bulk_data: [riderTxnType, sellerTxnType],
-      meta: [
-        {
-          jumga: amt - (riderGains + sellerGains),
-          shop_owner: sellerGains,
-          dispatch_rider: riderGains,
-          total: amt,
-        },
-      ],
     };
 
     const res = await flw.Transfer.bulk(data);
     console.log(res);
     msg = res.status;
-    return msg;
+    const meta = {
+      status: msg,
+      jumga: amt - (riderGains + sellerGains - delFee),
+      shop_owner: sellerGains,
+      dispatch_rider: riderGains,
+      total: amt,
+    };
+    return meta;
   } catch (error) {}
-  return msg;
+  return { status: "error" };
 };
 
 //available to GBP,NGN,GHS
@@ -47,7 +48,6 @@ const bankTransfer = (user, amt) => {
     narration: "Payment Sales Transfer Share",
     currency: getCurFromCountry(user.country),
     reference: `SalesDistrx-${user.name}-${Date.now()}`,
-    callback_url: "http://localhost:" + process.env.PORT + "/api/salesdb/",
   };
 
   if (user.country != "GBP") {

@@ -94,11 +94,13 @@
       <script src="js/custom.js"></script>
       <script>
           $(document).ready(function() {
-              $.get("http://localhost:3000/api/salesdb/",function (data,status,xhr) {
+              $.get("http://" + location.host + "/api/salesdb/",function (data,status,xhr) {
                   if(data.status == "success"){
                     let sales = data.msg;
                   for (let i = 0; i < sales.length; i++) {
-                     $("#tbd").append("<tr><th scope='row'>"+ sales.created_at +"</th><td>"+ sales.jumga +"</td><td>"+ sales.shop_owner +"</td><td>"+ sales.dispatch_rider +"</td><td>"+ sales.total_amount +"</td></tr>");
+                     let sale = sales[i];
+                     let date = new Date(sale.createdAt);
+                     $("#tbd").append("<tr><th scope='row'>"+ date.toDateString() +"</th><td>"+ sale.jumga.toFixed() +"</td><td>"+ sale.shop_owner.toFixed() +"</td><td>"+ sale.dispatch_rider.toFixed() +"</td><td>"+ sale.total_amount.toFixed() +"</td></tr>");
                   }
                   }
                   

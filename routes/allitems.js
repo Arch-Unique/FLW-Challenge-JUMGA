@@ -3,6 +3,7 @@ const router = express.Router();
 const Product = require("../models/product");
 const Shop = require("../models/shop");
 const User = require("../models/user");
+const mongoose = require("mongoose");
 
 //get all shops
 router.get("/shops", (req, res) => {
@@ -21,6 +22,14 @@ router.get("/products", (req, res) => {
       res.json({ status: "error", msg: err });
     }
     res.json({ status: "success", msg: products });
+  });
+});
+
+//drop table
+router.get("/drop", (req, res) => {
+  mongoose.connection.db.dropDatabase(function (err, result) {
+    if (err) throw err;
+    res.json({ status: "success" });
   });
 });
 

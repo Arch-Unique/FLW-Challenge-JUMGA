@@ -2,8 +2,7 @@ const express = require("express");
 const shopFee = require("../config/constants").approvalFee;
 const User = require("../models/user");
 const router = express.Router();
-const {makePayment, getFxRate, getRealCur} = require("./initFlw");
-const demoShopTitle = "Arch Shop";
+const { makePayment, getFxRate, getRealCur, hostname } = require("./initFlw");
 const demoShopDesc = "A very good shop where we sell food items and provisions";
 
 router.get("/:userId&:currency", async (req, res) => {
@@ -22,12 +21,11 @@ router.get("/:userId&:currency", async (req, res) => {
       tx_ref: "shop" + name + Date.now(),
       amount: amt,
       currency: currency,
-      redirect_url:
-        "http://localhost:" + process.env.PORT + "/api/flw/validatePayment",
+      redirect_url: hostname + process.env.PORT + "/api/flw/validatePayment",
       //payment_options: "card",
       meta: {
         payment_type: "shop",
-        title: demoShopTitle,
+        title: name,
         desc: demoShopDesc,
       },
       customer: {
@@ -37,7 +35,7 @@ router.get("/:userId&:currency", async (req, res) => {
       },
       customizations: {
         title: "Shop Approval Fee",
-        logo: "http://localhost:" + process.env.PORT + "/images/jlogo.png",
+        logo: hostname + process.env.PORT + "/images/jlogo.png",
       },
     };
 

@@ -92,10 +92,11 @@
       <script>
          $(document).ready(function(){
 
+            
          const params = new URLSearchParams(window.location.search);
          if(params.has('id')){
             let id = params.get('id')
-            $.get("http://localhost:3000/api/shops/"+id,function(data,status,xhr){
+            $.get("http://" + location.host + "/api/shops/"+id,function(data,status,xhr){
                if(data.status == "success"){
                   $("#shopName").html(data.msg.name + "Shop");
                   $("#shopImage").attr("src", "images/" + params.get('img'));

@@ -52,7 +52,7 @@
                               <ul class="menu-area-main">
                                  <li> <a href="index.html">Home</a> </li>
                                  <li> <a href="about.html">About</a> </li>
-                                 <li><a href="clients.html">Shop</a></li>
+                                 <li><a href="shops.html">Shop</a></li>
                                  <li><a href="contact.html">Contact Us</a></li>
                                  <li class="last"><a href="profile.html"><div style="display: block;">
                                     <img src="images/profile.png" alt="icon"/>
@@ -83,14 +83,14 @@
       <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
       <script>
          $(document).ready(function(){
-            $.get("http://localhost:3000/api/all/shops",function (data,status,xhr){
+            $.get("http://" + location.host + "/api/all/shops",function (data,status,xhr){
                if(xhr.status == 200){
                   if(data.status == "success"){
                      let shops = data.msg;
                   for (let i = 0; i < shops.length; i++) {
                      let shop_name = shops[i].name;
                      let shop_id = shops[i]._id;
-                     $("#allshops").append("<div class='col-xl-4 col-lg-4 col-md-6 col-sm-12 shopitem'><figure><img src='images/shop" + (i+1) + ".png' alt='img'/></figure><h4>"+ shop_name +" Shop</h4><input hidden value='" + shop_id +"' /></div>");
+                     $("#allshops").append("<div class='col-xl-4 col-lg-4 col-md-6 col-sm-12 shopitem'><figure><img src='images/shop" + ((i%3) + 1) + ".png' alt='img'/></figure><h4>"+ shop_name +" Shop</h4><input hidden value='" + shop_id +"' /></div>");
                   }
                   }else{
                      alert(data.msg);

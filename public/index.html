@@ -34,6 +34,7 @@
             <button class="setcont"  value="1">UK</button>
             <button class="setcont"  value="2">Kenya</button>
             <button class="setcont"  value="3">Ghana</button>
+            
          </div>
          <div class="loader" style="display: none;">
             <img src="images/loading.gif" alt="#" />
@@ -170,7 +171,7 @@
                }else{
                   $("#progText").html("Getting Demo Account...")
                    $(".loader").fadeIn();
-                  $.get("http://localhost:3000/api/all/products",function(data,status,xhr){
+                  $.get("http://" + location.host + "/api/all/products",function(data,status,xhr){
                      if(data.status == "success"){
                         let products = data.msg;
                         for (let i = 0; i < 8; i++) {

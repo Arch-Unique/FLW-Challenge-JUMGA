@@ -5,97 +5,25 @@ const Shop = require("../models/shop");
 const Product = require("../models/product");
 const faker = require("faker");
 
-// Sample user
-router.get("/user", async (req, res) => {
-  const name = "Arch";
-  const email = "arch@gmail.com";
-  const phone = "08034567890";
-  const country = "Nigeria";
-  const acct_no = "0690000031";
-  const bank_name = "044";
-  let users;
-
-  users = await User.find();
-  if (users.length != 0) {
-    res.status(200).json({ msg: users[0]._id });
-  } else {
-    User.create({
-      name: name,
-      email: email,
-      phone: phone,
-      country: country,
-      bank_details: {
-        acct_no: acct_no,
-        bank_name: bank_name,
-      },
-      is_dispatch_rider: false,
-    })
-      .then((resi) => {
-        res.json({ status: "success", msg: resi.id });
-      })
-      .catch((err) => {
-        res.json({ status: "success", msg: err });
-      });
-  }
-});
-
-// Sample Dispatch Rider
-router.get("/rider", async (req, res) => {
-  const name = "Sanchez";
-  const email = "sanchez@gmail.com";
-  const phone = "08054637291";
-  const country = "Nigeria";
-  const acct_no = "0690000032";
-  const bank_name = "044";
-
-  const users = await User.find();
-
-  if (users[1] != null) {
-    res.status(200).json({ msg: users[1].id });
-  } else {
-    User.create({
-      name: name,
-      email: email,
-      phone: phone,
-      country: country,
-      bank_details: {
-        acct_no: acct_no,
-        bank_name: bank_name,
-      },
-      is_dispatch_rider: true,
-    })
-      .then((resi) => {
-        res.json({ status: "success", msg: resi.id });
-      })
-      .catch((err) => {
-        res.json({ status: "error", msg: err });
-      });
-  }
-});
-
 //sample shop
-router.post("/shop", (req, res) => {
-  User.find(function (err, doc) {
-    if (err) throw err;
-    let owner = doc[0];
-    let drider = doc[4];
+router.post("/shop", async (req, res) => {
+  try {
+    let users = await User.find();
+    let owner = users[0];
+    let drider = users[4];
 
-    console.log(drider);
-    console.log(owner);
+    req.body["dispatch_rider"] = drider._id;
+    let shop = await Shop.create(req.body);
 
-    req.body["dispatch_rider"] = drider.id;
-    const shop = new Shop(req.body);
-
-    owner.shops.push(shop);
-    owner.save(function (err, user) {
-      if (err) {
-        res.json({ status: "error", msg: err });
-      }
-      res.json({ status: "success", msg: user.shops[0] });
-    });
-  });
+    owner.shops.push(shop._id);
+    await owner.save();
+    res.json({ status: "success", msg: user.shops[0] });
+  } catch (error) {
+    res.json({ status: "error", msg: error });
+  }
 });
 
+//check if a user exist in database
 router.get("/check", async (req, res) => {
   try {
     let users = await User.find();
@@ -103,7 +31,7 @@ router.get("/check", async (req, res) => {
   } catch (error) {}
 });
 
-//demo
+//create demo user
 router.get("/demo/:country", async (req, res) => {
   const countries = ["Nigeria", "UK", "Kenya", "Ghana"];
   const cid = req.params.country;
@@ -113,6 +41,7 @@ router.get("/demo/:country", async (req, res) => {
     let products = await Product.find();
     res.json({ status: "success", msg: users[0], products: products });
   } else {
+    //rearrange the country array to put user first
     [countries[0], countries[cid]] = [countries[cid], countries[0]];
     try {
       for (let i = 0; i < 8; i++) {

@@ -1,5 +1,8 @@
 const express = require("express");
+const cors = require("cors");
 let app = express();
+app.use(cors());
+app.options("*", cors());
 const userRoute = require("./routes/users");
 const productRoute = require("./routes/products");
 const shopRoute = require("./routes/shops");
@@ -30,7 +33,7 @@ app.use("/api/flw/shopFeePayment/", shopPaymentRoute);
 app.use("/api/demo/", demoUser);
 app.use("/api/salesdb/", saleRoute);
 
-// A simple get
+// A simple base site call
 app.use(express.static(__dirname + "/public"));
 
 module.exports = app;
