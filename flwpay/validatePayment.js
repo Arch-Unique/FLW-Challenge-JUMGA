@@ -40,7 +40,7 @@ router.get("/", async (req, res) => {
         );
         if (result.status == "success") {
           let sRes = await axios.post(salesURL, result);
-          if (sRes.status == "success") {
+          if (sRes.status == 200) {
             res.redirect(finalRedUrlSuc);
           } else {
             res.redirect(finalRedUrlErr);

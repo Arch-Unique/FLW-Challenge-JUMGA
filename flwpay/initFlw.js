@@ -3,7 +3,7 @@ const Flutterwave = require("flutterwave-node-v3");
 const flw = new Flutterwave(process.env.FLWPUBLICKEY, process.env.FLWSECRETKEY);
 const currs = ["NGN", "GBP", "KES", "GHS"];
 const countries = ["Nigeria", "UK", "Kenya", "Ghana"];
-const hostname = "http://localhost"; //replace with your's
+const hostname = "http://localhost:"; //replace with your's
 
 //get real currency from integer
 const getRealCur = (curr) => {

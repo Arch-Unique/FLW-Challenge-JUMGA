@@ -25,6 +25,7 @@ router.post("/", async (req, res) => {
     let amt = await getFxRate(productPrice, cur);
     // dfee - delivery fee constant $10
     let dfee = await getFxRate(10, cur);
+    amt += dfee;
 
     let userData = {
       tx_ref: `product-${name}-${productId}-${Date.now()}`,
