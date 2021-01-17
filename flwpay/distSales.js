@@ -7,10 +7,14 @@ const { getCurFromCountry, flw } = require("./initFlw");
 const Shop = require("../models/shop");
 
 const distSales = async (amt, delFee, shopId) => {
+  amt = parseFloat(amt);
+  delFee = parseFloat(delFee);
   //get the respective prices for each party
+  amt -= delFee;
   const sellerGains = ((100 - productPercent) * amt) / 100;
   const riderGains = ((100 - deliveryPercent) * delFee) / 100;
   let msg = "Failure";
+  amt += delFee;
 
   try {
     let shop = await Shop.findById(shopId)
@@ -31,7 +35,7 @@ const distSales = async (amt, delFee, shopId) => {
     msg = res.status;
     const meta = {
       status: msg,
-      jumga: amt - (riderGains + sellerGains - delFee),
+      jumga: amt - (riderGains + sellerGains),
       shop_owner: sellerGains,
       dispatch_rider: riderGains,
       total: amt,
