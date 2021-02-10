@@ -94,7 +94,7 @@
       <script src="js/custom.js"></script>
       <script>
           $(document).ready(function() {
-              $.get("http://" + location.host + "/api/salesdb/",function (data,status,xhr) {
+              $.get("https://" + location.host + "/api/salesdb/",function (data,status,xhr) {
                   if(data.status == "success"){
                     let sales = data.msg;
                   for (let i = 0; i < sales.length; i++) {

@@ -289,7 +289,7 @@
       <script>
          $(document).ready(function(){
             let id = sessionStorage.getItem("userId");
-            $.get("http://" + location.host + "/api/users/"+id,function (data,status,xhr){
+            $.get("https://" + location.host + "/api/users/"+id,function (data,status,xhr){
                if(data.status == "success"){
                   let user = data.msg;
                   $("input[name='Name']").val(user.name);

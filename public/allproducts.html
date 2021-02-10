@@ -96,7 +96,7 @@
          const params = new URLSearchParams(window.location.search);
          if(params.has('id')){
             let id = params.get('id')
-            $.get("http://" + location.host + "/api/shops/"+id,function(data,status,xhr){
+            $.get("https://" + location.host + "/api/shops/"+id,function(data,status,xhr){
                if(data.status == "success"){
                   $("#shopName").html(data.msg.name + "Shop");
                   $("#shopImage").attr("src", "images/" + params.get('img'));

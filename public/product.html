@@ -125,7 +125,7 @@
          const params = new URLSearchParams(window.location.search);
          let prodid = params.has('id') ? params.get('id') : "";
          
-            $.get("http://" + location.host + "/api/products/"+prodid,function(data,status,xhr){
+            $.get("https://" + location.host + "/api/products/"+prodid,function(data,status,xhr){
                if(data.status == "success"){
                   $("#productTitle").html(data.msg.name);
             $("#productPrice").html(data.msg.price);
@@ -140,7 +140,7 @@
             const userId = sessionStorage.getItem('userId');
             const cur = getNumForCountry(sessionStorage.getItem('userCountry'));
             
-            $.post("http://" + location.host + "/api/flw/productPayment/", {
+            $.post("https://" + location.host + "/api/flw/productPayment/", {
                userId: userId,
                productId: prodid,
                currency: cur,

@@ -101,7 +101,7 @@
             $.ajax({
                   type:'GET',
                   async: false,
-                  url: 'http://jumga-arch.herokuapp.com//api/demo/check',
+                  url: 'https://' + location.host + '/api/demo/check',
                   success: function(data,status, jqXHR) {
                      if(data.status == "success"){
                         mcid = data.msg;
@@ -115,7 +115,7 @@
          function getUser(cid){
             $.ajax({
                   type:'GET',
-                  url: 'http://jumga-arch.herokuapp.com//api/demo/demo/'+ cid,
+                  url: 'https://' + location.host + '/api/demo/demo/'+ cid,
                   success: function(data,status, jqXHR) {
                      if(data.status == "success"){
                         sessionStorage.setItem("userId",data.msg._id);
@@ -168,7 +168,7 @@
                }else{
                   $("#progText").html("Getting Demo Account...")
                    $(".loader").fadeIn();
-                  $.get("http://" + location.host + "/api/all/products",function(data,status,xhr){
+                  $.get("https://" + location.host + "/api/all/products",function(data,status,xhr){
                      if(data.status == "success"){
                         let products = data.msg;
                         for (let i = 0; i < 8; i++) {

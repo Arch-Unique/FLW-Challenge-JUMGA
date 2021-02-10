@@ -83,7 +83,7 @@
       <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
       <script>
          $(document).ready(function(){
-            $.get("http://" + location.host + "/api/all/shops",function (data,status,xhr){
+            $.get("https://" + location.host + "/api/all/shops",function (data,status,xhr){
                if(xhr.status == 200){
                   if(data.status == "success"){
                      let shops = data.msg;

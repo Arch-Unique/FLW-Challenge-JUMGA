@@ -102,7 +102,7 @@
       
       <script>
          $("#dropbtn").on("click", function(e){
-            $.get("http://" + location.host + "/api/all/drop", function(data,status,xhr){
+            $.get("https://" + location.host + "/api/all/drop", function(data,status,xhr){
                if(data.status == "success"){
                   sessionStorage.clear();
                   window.location.href = "./index.html"
