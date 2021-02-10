@@ -101,7 +101,7 @@
             $.ajax({
                   type:'GET',
                   async: false,
-                  url: 'http://localhost:3000/api/demo/check',
+                  url: 'http://jumga-arch.herokuapp.com//api/demo/check',
                   success: function(data,status, jqXHR) {
                      if(data.status == "success"){
                         mcid = data.msg;
@@ -115,7 +115,7 @@
          function getUser(cid){
             $.ajax({
                   type:'GET',
-                  url: 'http://localhost:3000/api/demo/demo/'+ cid,
+                  url: 'http://jumga-arch.herokuapp.com//api/demo/demo/'+ cid,
                   success: function(data,status, jqXHR) {
                      if(data.status == "success"){
                         sessionStorage.setItem("userId",data.msg._id);
