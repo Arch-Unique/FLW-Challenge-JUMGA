@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
       tx_ref: `product-${name}-${productId}-${Date.now()}`,
       amount: amt,
       currency: getRealCur(cur),
-      redirect_url: hostname + process.env.PORT + "/api/flw/validatePayment",
+      redirect_url: hostname + "/api/flw/validatePayment",
       //payment_options: "card",
       meta: {
         payment_type: "product",
@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
       },
       customizations: {
         title: productName,
-        logo: hostname + process.env.PORT + "/images/jlogo.png",
+        logo: hostname + "/images/jlogo.png",
       },
     };
 

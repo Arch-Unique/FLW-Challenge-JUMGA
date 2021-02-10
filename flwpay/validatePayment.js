@@ -5,9 +5,9 @@ const { flw, hostname } = require("./initFlw");
 const distSales = require("./distSales");
 
 router.get("/", async (req, res) => {
-  const demoShopURL = hostname + process.env.PORT + "/api/demo/shop";
-  const trxURL = hostname + process.env.PORT + "/transaction.html";
-  const salesURL = hostname + process.env.PORT + "/api/salesdb/";
+  const demoShopURL = hostname + "/api/demo/shop";
+  const trxURL = hostname + "/transaction.html";
+  const salesURL = hostname + "/api/salesdb/";
   const txRef = req.query.tx_ref;
   const txId = req.query.transaction_id;
   const txStatus = req.query.status;
