@@ -1,4 +1,5 @@
-const dbUrl = "mongodb://localhost/jumga";
+const dbUrl =
+  "mongodb+srv://archjumga:SMvkRAGBAxkCClnR@mongojumga.hdcts.mongodb.net/archjumga?retryWrites=true&w=majority";
 const url = require("url");
 
 const getUrl = (req) => {
