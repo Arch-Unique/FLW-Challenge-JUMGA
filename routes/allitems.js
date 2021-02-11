@@ -28,10 +28,12 @@ router.get("/products", (req, res) => {
 //drop table
 router.get("/drop", async (req, res) => {
   try {
-    await mongoose.connection.db.dropCollection("products");
-    await mongoose.connection.db.dropCollection("sales");
-    await mongoose.connection.db.dropCollection("shops");
-    await mongoose.connection.db.dropCollection("users");
+    let colList = await mongoose.connection.db.listCollections().toArray();
+    colList.forEach(colName => {
+      if(colName.name != "jumga"){
+        await mongoose.connection.db.dropCollection(colName);
+      }
+    });
     res.json({ status: "success" });
   } catch (error) {
     console.log(error);
