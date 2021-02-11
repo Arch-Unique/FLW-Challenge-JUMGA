@@ -1642,6 +1642,7 @@ input[type="radio"] .styled:checked+label::after {
 .btn-primary {
      background: #081b30;
      border: indianred;
+     color: white;
      max-width: 170px;
      width: 100%;
      border-radius: 25px;

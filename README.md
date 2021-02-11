@@ -1,37 +1,36 @@
 # Jumga Demo Site
 
-This is a simple demo site showing the usage of the flutterwave payment integration for an acclaimed company by the name JUMGA. Made By Idigo Ikenna. Check [localhost:3000/about.html](http://localhost:3000/about.html) for more info about me
+A quick online demo can be found here :
+[jumga-arch.herokuapp.com](https://jumga-arch.herokuapp.com)
+
+This is a simple demo site showing the usage of the flutterwave payment integration for an acclaimed company by the name JUMGA. Made By Idigo Ikenna. Check [jumga-arch.herokuapp.com/about.html](https://jumga-arch.herokuapp.com/about.html) for more info about me
 
 ## Requirements
 
 ---
 
 - npm
-- mongodb
+- heroku
+- mongodb url (Using mongodb atlas or any other database package)
 
-## Procedures (On Local Machine)
+## Procedures (On Online Server)
 
 ---
 
-- Create a .env file and fill the following parameters
+- Make sure to set this env vars when deploying to heroku
 
   ```env
-  export PORT=3000 {or any number you choose}
-  export FLWPUBLICKEY={your flutterwave public key}
-  export FLWSECRETKEY={your flutterwave secret key}
-  export FLWENCKEY={your flutterwave encryption key}
+  PORT=3000 {or any number you choose}
+  FLWPUBLICKEY={your flutterwave public key}
+  FLWSECRETKEY={your flutterwave secret key}
+  FLWENCKEY={your flutterwave encryption key}
   ```
 
-- Make sure your mongodb is set up correctly. The project makes use of a local database situated on the system. So if you want to use a local machine , make sure your mongo is set up correctly. If not you can use the online edition and change the **dbUrl** constant in **config/constants**.
+- Make sure your mongodb is set up correctly. The project makes use of an online database situated on the cloud. You can use the online edition and change the **dbUrl** constant in **config/constants**.
 
-- After installation of the required npm packages found in the package.json file , run the following commands
+- You can also change the hardcoded hostname in **flwpay/initFlw.js** to suit your own needs
 
-  ```bash
-    source -env
-    npm start
-  ```
-
-- Open [localhost:3000](http://localhost:3000) on your browser (Make sure you have internet connection since the payment integration uses internet)
+- Open [jumga-arch.herokuapp.com](https://jumga-arch.herokuapp.com) on your browser
 
 ## Brief Rundown
 
@@ -56,12 +55,12 @@ This is a simple demo site showing the usage of the flutterwave payment integrat
     Using this percentages , whenever you navigate to buy any product on the site , based on the country that was simulated early on , the prices for those product are automatically converted to their respective currencies. If the purchase is successful , a success page is shown to the user as confirmation.  
      <br>
 
-    Finally, to check the that each of the parties got their money we used the **bulk transfer option** provided by flutterwave to send their profits. To visualize there is a page _[localhost:3000/salesdb.html](http://localhost:3000/salesdb.html)_ that shows the amount each party got for the sale.
+    Finally, to check the that each of the parties got their money we used the **bulk transfer option** provided by flutterwave to send their profits. To visualize there is a page _[jumga-arch.herokuapp.com/salesdb.html](https://jumga-arch.herokuapp.com/salesdb.html)_ that shows the amount each party got for the sale.
 
 ## Notes
 
 ---
 
-To restart the database for you to be able to choose another country for simulation. Go to the about page [localhost:3000/about.html](http://localhost:3000/about.html) and click on the **restart** button.
+To restart the database for you to be able to choose another country for simulation. Go to the about page [jumga-arch.herokuapp.com/about.html](https://jumga-arch.herokuapp.com/about.html) and click on the **restart** button.
 
 All the links on this readme will only work when you've successfully followed the procedures.
