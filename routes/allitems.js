@@ -26,11 +26,16 @@ router.get("/products", (req, res) => {
 });
 
 //drop table
-router.get("/drop", (req, res) => {
-  mongoose.connection.db.dropDatabase(function (err, result) {
-    if (err) throw err;
+router.get("/drop", async (req, res) => {
+  try {
+    await mongoose.connection.db.dropCollection("products");
+    await mongoose.connection.db.dropCollection("sales");
+    await mongoose.connection.db.dropCollection("shops");
+    await mongoose.connection.db.dropCollection("users");
     res.json({ status: "success" });
-  });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = router;
