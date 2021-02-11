@@ -29,11 +29,13 @@ router.get("/products", (req, res) => {
 router.get("/drop", async (req, res) => {
   try {
     let colList = await mongoose.connection.db.listCollections().toArray();
-    colList.forEach(colName => {
-      if(colName.name != "jumga"){
-        await mongoose.connection.db.dropCollection(colName);
+    for (let index = 0; index < colList.length; index++) {
+      const element = colList[index];
+      const colname = element.name;
+      if (colname != "jumga") {
+        await mongoose.connection.db.dropCollection(colname);
       }
-    });
+    }
     res.json({ status: "success" });
   } catch (error) {
     console.log(error);
