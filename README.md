@@ -1,5 +1,9 @@
 # Jumga Demo Site
 
+Check out the demo here [jumga-arch.herokuapp.com](https://jumga-arch.herokuapp.com)
+
+Also check out the dev branch [dev-branch](https://github.com/Arch-Unique/FLW-Challenge-JUMGA/tree/dev)
+
 This is a simple demo site showing the usage of the flutterwave payment integration for an acclaimed company by the name JUMGA. Made By Idigo Ikenna. Check [localhost:3000/about.html](http://localhost:3000/about.html) for more info about me
 
 ## Requirements
